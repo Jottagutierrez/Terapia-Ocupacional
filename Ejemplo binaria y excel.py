@@ -46,19 +46,18 @@ print(Esp)
     
 #crea el modelo
 m=Model('modelo2')
+
 ##Variable de decisión
 P=5 #P: cantidad total de profesores 
 K=4 #K: cantidad de especialidades diferentes
 x = []
-
 # Para cada profesor
 for p in range(P):
     # agregar una lista
     x.append([])
-
     # para cada especialidad crear lista y añadir variable binaria. 1 si el profesor realiza la actividad k
     for k in range(K):
         x[p].append([])
-        m.addVar(vtype=GRB.BINARY, name="x[%d,%d]"%(p,k))
+        x[p][k]=m.addVar(vtype=GRB.BINARY, name="x[%d,%d]"%(p,k))
         ##x[p][k] = first_sheet.cell(p,k)
         
