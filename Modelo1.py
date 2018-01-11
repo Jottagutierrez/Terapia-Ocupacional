@@ -18,67 +18,124 @@ def parametro1(sheet,col):
     for k in range(1,sheet.nrows):
         key=sheet.cell(k,0).value
         Var.setdefault(key,[])
-        cell=sheet.cell(k,col)
-        Var[key].append(cell.value)
+        Var[key].append(sheet.cell(k,col).value)
     return Var
 
 
+def parametro2(sheet):
+    Var={}
+    key=0
+    for k in range (1,sheet.nrows):
+        if sheet.cell(k,0).value.isnumeric:
+            key=int(sheet.cell(k,0).value)
+        else:
+            key=sheet.cell(k,0).value
+        Var.setdefault(key,[])
+        for i in range(1,sheet.ncols):
+            cell=sheet.cell(k,i)
+            Var[key].append(cell.value)
+    return Var
+
+
+def parametroB(sheet):
+    Var={}
+    key=0
+    for k in range(1,sheet.nrows):
+        key=int(sheet.cell(k,0).value)
+        Var[key]=[]
+        
+        if sheet.cell(k,1).value == 'Supervision':
+            Var[key].append([])
+            Var[key].append([0,0,0])
+            Var[key].append([0,0,0])
+            if sheet.cell(k,2).value == 'Cuarto':
+                Var[key][0].append(1)
+                Var[key][0].append(0)
+                Var[key][0].append(0)
+            elif sheet.cell(k,2).value == 'Mencion':
+                Var[key][0].append(0)
+                Var[key][0].append(1)
+                Var[key][0].append(0)
+            elif sheet.cell(k,2).value == 'Internado':
+                Var[key][0].append(0)
+                Var[key][0].append(0)
+                Var[key][0].append(1)
+                
+        if sheet.cell(k,1).value == 'Correccion':
+            Var[key].append([0,0,0])
+            Var[key].append([])
+            Var[key].append([0,0,0])
+            if sheet.cell(k,2).value == 'Cuarto':
+                Var[key][1].append(1)
+                Var[key][1].append(0)
+                Var[key][1].append(0)
+            elif sheet.cell(k,2).value == 'Mencion':
+                Var[key][1].append(0)
+                Var[key][1].append(1)
+                Var[key][1].append(0)
+            elif sheet.cell(k,2).value == 'Internado':
+                Var[key][1].append(0)
+                Var[key][1].append(0)
+                Var[key][1].append(1)
+                    
+        if sheet.cell(k,1).value == 'Examen':
+            Var[key].append([0,0,0])
+            Var[key].append([0,0,0])
+            Var[key].append([])
+            if sheet.cell(k,2).value == 'Cuarto':
+                Var[key][2].append(1)
+                Var[key][2].append(0)
+                Var[key][2].append(0)
+            elif sheet.cell(k,2).value == 'Mencion':
+                Var[key][2].append(0)
+                Var[key][2].append(1)
+                Var[key][2].append(0)
+            elif sheet.cell(k,2).value == 'Internado':
+                Var[key][2].append(0)
+                Var[key][2].append(0)
+                Var[key][2].append(1)
+    return Var
+
 T = parametro1(sheet_1,1)
-print(T)
+print(T['2'])
 
-print(T['3'])
+D = parametro1(sheet_2,1)
+S = parametro1(sheet_2,2)
+H = parametro1(sheet_2,3)
 
+Y = parametro1(sheet_5,1)
+M = parametro1(sheet_5,2)
 
+U = parametro2(sheet_3)
+C = parametro2(sheet_4)
+E = parametro2(sheet_7)
+print(C['carlos'])
 
-
-
-
-
-T={}
-key_T=0
-for k in range(1,sheet_1.nrows):
-    key_T=sheet_1.cell(k,0)
-    T.setdefault(key_T,[])
-    cell=sheet_1.cell(k,1)
-    T[key_T].append(cell.value)
-print(T.get('1'))
+B = parametroB(sheet_6)
 
 
-D={}
-key_D=0
-for k in range(1,sheet_2.nrows):
-    key_D=sheet_2.cell(k,0)
-    D.setdefault(key_D,[])
-    cell=sheet_2.cell(k,1)
-    D[key_D].append(cell.value)
-print(D)
 
 
-S={}
-key_S=0
-for k in range(1,sheet_2.nrows):
-    key_S=sheet_2.cell(k,0)
-    S.setdefault(key_S,[])
-    cell=sheet_2.cell(k,2)
-    S[key_S].append(cell.value)
-print(S)
+  Var.append([])
+            Var.append([])
+            Var.append([])
+            cell_1=sheet.cell(k,1).value
+            cell_2=sheet.cell(k,2).value
+            
+            if cell_1 == 'supervision':
+                if cell_2 == 'correccion'
 
 
-H={}
-key_H=0
-for k in range(1,sheet_2.nrows):
-    key_H=sheet_2.cell(k,0)
-    H.setdefault(key_H,[])
-    cell=sheet_2.cell(k,3)
-    H[key_H].append(cell.value)
-print(H)
 
-U={}
-key_U=0
-for k in range(1,sheet_3.nrows):
-    key_U=sheet_1.cell(k,0)
-    U.setdefault(key_U,[])
-    for i in range(1,sheet_3.ncols):
-        cell=sheet_1.cell(k,i)
-        a[key].append(cell.value)
-print(a)
+
+
+
+
+
+
+
+
+
+
+
+
