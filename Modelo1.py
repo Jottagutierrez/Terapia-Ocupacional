@@ -96,6 +96,27 @@ def parametroB(sheet):
                 Var[key][2].append(1)
     return Var
 
+
+def parametroU(sheet):
+    Var={}
+    key=0
+    semanas=[]
+    for i in range (1,sheet_3.nrows):
+        semanas.append(int(sheet_3.cell(i,1).value))
+    s_max=max(semanas)
+    
+    for k in range(1,sheet_3.nrows):
+        key=int(sheet_3.cell(k,0).value)
+        Var[key]=[]    
+        sem=semanas[k-1]
+        for s in range(s_max):
+            if sem-1 == s:
+                Var[key].append(1)
+            else:
+                Var[key].append(0)
+    return Var
+
+    
 T = parametro1(sheet_1,1)
 print(T['2'])
 
@@ -106,24 +127,13 @@ H = parametro1(sheet_2,3)
 Y = parametro1(sheet_5,1)
 M = parametro1(sheet_5,2)
 
-U = parametro2(sheet_3)
+U = parametroU(sheet_3)
 C = parametro2(sheet_4)
 E = parametro2(sheet_7)
-print(C['carlos'])
 
 B = parametroB(sheet_6)
 
 
-
-
-  Var.append([])
-            Var.append([])
-            Var.append([])
-            cell_1=sheet.cell(k,1).value
-            cell_2=sheet.cell(k,2).value
-            
-            if cell_1 == 'supervision':
-                if cell_2 == 'correccion'
 
 
 
