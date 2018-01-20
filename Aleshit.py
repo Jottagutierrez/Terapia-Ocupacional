@@ -46,6 +46,72 @@ for p in range(len(a)):
         
         
         
+        '''#FunciÃ³n para llamar el parÃ¡metro B
+#Tabula el aÃ±o y el tipo de practica como un vector tridimensional
+#Usa como llave el numero de la prÃ¡ctica
+def parametroB(sheet):
+    Var={}
+    key=0
+    for k in range(1,sheet.nrows):
+        key=int(sheet.cell(k,0).value)
+        Var[key]=[]
+        
+        if sheet.cell(k,1).value == 'Supervision':
+            Var[key].append([])
+            Var[key].append([0,0,0])
+            Var[key].append([0,0,0])
+            if sheet.cell(k,2).value == 'Cuarto':
+                Var[key][0].append(1)
+                Var[key][0].append(0)
+                Var[key][0].append(0)
+            elif sheet.cell(k,2).value == 'Mencion':
+                Var[key][0].append(0)
+                Var[key][0].append(1)
+                Var[key][0].append(0)
+            elif sheet.cell(k,2).value == 'Internado':
+                Var[key][0].append(0)
+                Var[key][0].append(0)
+                Var[key][0].append(1)
+                
+        if sheet.cell(k,1).value == 'Correccion':
+            Var[key].append([0,0,0])
+            Var[key].append([])
+            Var[key].append([0,0,0])
+            if sheet.cell(k,2).value == 'Cuarto':
+                Var[key][1].append(1)
+                Var[key][1].append(0)
+                Var[key][1].append(0)
+            elif sheet.cell(k,2).value == 'Mencion':
+                Var[key][1].append(0)
+                Var[key][1].append(1)
+                Var[key][1].append(0)
+            elif sheet.cell(k,2).value == 'Internado':
+                Var[key][1].append(0)
+                Var[key][1].append(0)
+                Var[key][1].append(1)
+                    
+        if sheet.cell(k,1).value == 'Examen':
+            Var[key].append([0,0,0])
+            Var[key].append([0,0,0])
+            Var[key].append([])
+            if sheet.cell(k,2).value == 'Cuarto':
+                Var[key][2].append(1)
+                Var[key][2].append(0)
+                Var[key][2].append(0)
+            elif sheet.cell(k,2).value == 'Mencion':
+                Var[key][2].append(0)
+                Var[key][2].append(1)
+                Var[key][2].append(0)
+            elif sheet.cell(k,2).value == 'Internado':
+                Var[key][2].append(0)
+                Var[key][2].append(0)
+                Var[key][2].append(1)
+    return Var'''
+        
+        
+        
+        
+        
         
      for i in range(I):
         # for each patient add a constraint

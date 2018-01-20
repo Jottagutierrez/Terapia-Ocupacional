@@ -1,7 +1,6 @@
 #Se importan las librerías
 from gurobipy import *
 import xlrd
-
 #Se importan las hojas del excel
 book = xlrd.open_workbook('Modelo1_db.xlsx')
 sheet_1 = book.sheet_by_index(0)
@@ -26,84 +25,21 @@ def parametro1(sheet,col):
     key=0
     for k in range(1,sheet.nrows):
         key=sheet.cell(k,0).value
-        Var.setdefault(key,[])
-        Var[key].append(sheet.cell(k,col).value)
+        Var[key]=sheet.cell(k,col).value
     return Var
 
 #Función para llamar variables de 2 subindices. Requiere solo la hoja de la variable
 #Lee una matriz cruzada
 def parametro2(sheet): 
     Var={}
-    key=0
     for k in range (1,sheet.nrows):
         key=sheet.cell(k,0).value
-        Var.setdefault(key,[])
+        Var[key]={}
         for i in range(1,sheet.ncols):
-            cell=sheet.cell(k,i)
-            Var[key].append(cell.value)
+            Var[key][i] = sheet.cell(k,i).value
     return Var
 
-'''#Función para llamar el parámetro B
-#Tabula el año y el tipo de practica como un vector tridimensional
-#Usa como llave el numero de la práctica
-def parametroB(sheet):
-    Var={}
-    key=0
-    for k in range(1,sheet.nrows):
-        key=int(sheet.cell(k,0).value)
-        Var[key]=[]
-        
-        if sheet.cell(k,1).value == 'Supervision':
-            Var[key].append([])
-            Var[key].append([0,0,0])
-            Var[key].append([0,0,0])
-            if sheet.cell(k,2).value == 'Cuarto':
-                Var[key][0].append(1)
-                Var[key][0].append(0)
-                Var[key][0].append(0)
-            elif sheet.cell(k,2).value == 'Mencion':
-                Var[key][0].append(0)
-                Var[key][0].append(1)
-                Var[key][0].append(0)
-            elif sheet.cell(k,2).value == 'Internado':
-                Var[key][0].append(0)
-                Var[key][0].append(0)
-                Var[key][0].append(1)
-                
-        if sheet.cell(k,1).value == 'Correccion':
-            Var[key].append([0,0,0])
-            Var[key].append([])
-            Var[key].append([0,0,0])
-            if sheet.cell(k,2).value == 'Cuarto':
-                Var[key][1].append(1)
-                Var[key][1].append(0)
-                Var[key][1].append(0)
-            elif sheet.cell(k,2).value == 'Mencion':
-                Var[key][1].append(0)
-                Var[key][1].append(1)
-                Var[key][1].append(0)
-            elif sheet.cell(k,2).value == 'Internado':
-                Var[key][1].append(0)
-                Var[key][1].append(0)
-                Var[key][1].append(1)
-                    
-        if sheet.cell(k,1).value == 'Examen':
-            Var[key].append([0,0,0])
-            Var[key].append([0,0,0])
-            Var[key].append([])
-            if sheet.cell(k,2).value == 'Cuarto':
-                Var[key][2].append(1)
-                Var[key][2].append(0)
-                Var[key][2].append(0)
-            elif sheet.cell(k,2).value == 'Mencion':
-                Var[key][2].append(0)
-                Var[key][2].append(1)
-                Var[key][2].append(0)
-            elif sheet.cell(k,2).value == 'Internado':
-                Var[key][2].append(0)
-                Var[key][2].append(0)
-                Var[key][2].append(1)
-    return Var'''
+
 
 def parametroB(sheet):
     Var = {}
@@ -126,21 +62,23 @@ def parametroB(sheet):
 #Transforma la semana s en un vector del tamaño del horizonte de semanas donde la semana de realización vale 1
 def parametroU(sheet):
     Var={}
-    key=0
     semanas=[]
-    for i in range (1,sheet_3.nrows):
-        semanas.append(int(sheet_3.cell(i,1).value))
-    s_max=max(semanas)
+    for i in range (1,sheet.nrows):
+        semanas.append(int(sheet.cell(i,2).value))
+    s_max=int(max(semanas))
     
-    for k in range(1,sheet_3.nrows):
-        key=int(sheet_3.cell(k,0).value)
-        Var[key]=[]    
+    for k in range(1,sheet.nrows):
+        Var[k]={}
         sem=semanas[k-1]
-        for s in range(s_max):
-            if sem-1 == s:
-                Var[key].append(1)
-            else:
-                Var[key].append(0)
+        centro = sheet.cell(k,1).value
+        for j in range(1,sheet_5.nrows):
+            key =  sheet_5.cell(j,0).value
+            Var[k][key]={}
+            for s in range(1,s_max+1):
+                if centro == key and sem == s :
+                    Var[k][key][s] = 1
+                else:
+                    Var[k][key][s] = 0
     return Var
 
 
@@ -148,7 +86,7 @@ def parametroU(sheet):
 T = parametro1(sheet_1,1) #tiempo de realización de la actividad "k" en horas
 
 D = parametro1(sheet_2,1) #Disponibilidad horaria semanal del profesor "p"
-S = parametro1(sheet_2,2) #Holgura de cantidad de horas de sobrecarga profesor "P"
+N = parametro1(sheet_2,2) #Holgura de cantidad de horas de sobrecarga profesor "P"
 H = parametro1(sheet_2,3) #Costo por hora de sobrecarga del profesor "p"
 
 Y = parametro1(sheet_5,1) #Puede mas de in profesor visitar el centro "j"? 1=si 0=no
@@ -174,83 +112,152 @@ m = Model("modelo1")
 ##Largos
 Especialidades = Lista1(sheet_8)
 P=len(D) #P: cantidad total de profesores 
-K=len(Especialidades) #K: cantidad de especialidades diferentes
+K=len(U) #K: cantidad de actividades
 
 semanas=[]
 for i in range (1,sheet_3.nrows):
-    semanas.append(int(sheet_3.cell(i,1).value))
+    semanas.append(int(sheet_3.cell(i,2).value))
 S=max(semanas)
 
-R=len(B[1]['Internado'])
+R=len(B[1])
+L=len(B[1]['Cuarto'])
+J =len(M)
+
 
     
 ## Variable de decision
-x = []
+x = {}
 # Para cada profesor
-for p in range(P):
+for p in N:
     # agregar una lista
-    x.append([])
+    x[p]={}
     # para cada especialidad crear lista y añadir variable binaria. 1 si el profesor realiza la actividad k
-    for k in range(K):
-        x[p].append([])
-        x[p][k]=m.addVar(vtype=GRB.BINARY, name="x[%d,%d]"%(p,k))
+    for k in range(1,K+1):
+        x[p][k]=m.addVar(vtype=GRB.BINARY, name="x[%s,%d]"%(p,k))
+        
+        
+        
+Z = {}
+# Para cada profesor
+for p in N:
+    # agregar una lista
+    Z[p]={}
+    # para cada especialidad crear lista y añadir variable binaria. 1 si el profesor realiza la actividad k
+    for s in range(1,S+1):
+        Z[p][s]=m.addVar(vtype=GRB.BINARY, name="Z[%s,%d]"%(p,s))
+        
+        
+        
+G = {}
+# Para cada profesor
+for p in N:
+    # agregar una lista
+    G[p]={}
+    for j in M:
+        G[p][j]=m.addVar(vtype=GRB.BINARY, name="G[%s,%s]"%(p,j))
+        
+        
+
+
 
 #Setea el objetivo del modelo
 m.ModelSense = GRB.MINIMIZE
 
 
+
 ## Restricciones
 #1. Capacidad profesor. Un profesor no puede realizar más actividades que su capacidad + holgura
-for p in range(P):
-    for s in range(S):
-        lexp = LinExpr()
-        rhs_1 = D[p]+Z[p][s]
-        for k in range(K):
-            lexp.addTerms(1.0, U[k][s]*T[k]*x[p][k])
-        m.addConstr(lexp, GRB.LESS_EQUAL, rhs_1, name='')
+for p in N:
+    for s in range(1,S+1):
+        lexp = LinExpr()        
+        for k in range(1,K+1):
+            for j in M:
+                Var111 =U[k][j][s]*T[k]
+                lexp.addTerms(Var111, x[p][k])
+        m.addConstr(lexp, GRB.LESS_EQUAL, D[p]+Z[p][s], name='')
         
         
 ##2. La cantidad de sobrecarga asignada debe ser menor o igual a la maxima carga extra
-for p in range(P):
-    for s in range(S):
+for p in N:
+    for s in range(1,S+1):
         lexp_2=LinExpr()
         lexp_2.add(Z[p][s])
         m.addConstr(lexp_2, GRB.LESS_EQUAL, D[p], name='')
         
-##3.1
-for j in range(J):
-    for p in range(P):
-        lexp_1 = LinExpr()
-        for k in range(K):
-            for r in range(R):
-                lexp.addTerms(1.0,B[k][r]['Supervision']*x[p][k])
-        m.addConstr(lexp_1,GRB.LESS_EQUAL,100*G[p][j], name='')
+        
+Aj={}
+for j in M: #Para cada centro
+    key_j = j
+    Aj[key_j]=[]
+    for k in range(1,sheet_3.nrows): #Para cada actividad
+        if sheet_3.cell(k,1).value == key_j: #Si la actividad corresponde al centro
+            Aj[key_j].append(k)
             
     
+##3.1
+for j in Aj: #para todos los centros con sus respectivas actividades
+    for p in N: #para todo profesor
+        lexp_3_1 = LinExpr()
+        for k in Aj[j]: #sumar todas las actividades en ese centro
+            for r in B['1']: #para cada tipo de practica
+                lexp_3_1.addTerms(1.0,B[k][r]['Supervision']*x[p][k])
+        m.addConstr(lexp_3_1, GRB.LESS_EQUAL, M[j]*G[p][j], name= '')
+            
+    
+##3.2
+for j in Aj:
+    for p in N:
+        lexp_3_2=LinExpr()
+        for k in Aj[j]:
+            for r in B['1']:
+                lexp_3_2.addTerms(1.0,B[k][r]['Supervision']*x[p][k])
+        m.addConstr(G[p][j], GRB.LESS_EQUAL, lexp_3_2, name= '')
 
 
+##4
+for j in M:
+    lexp_4=LinExpr()
+    for p in N:
+        lexp_4.addTerms(1.0, G[p][j]) 
+    m.addConstr(lexp_4, GRB.LESS_EQUAL, Y[j] + 1, name= '')
+    
+
+##5
+for k in range(1,K+1):
+    lexp_5=LinExpr()
+    for p in N:
+        lexp_5.addTerms(1.0, x[p][k])
+    m.addConstr(lexp_5, GRB.EQUAL, 1, name= '')
+
+##6
+for p in N:
+    for k in range(1,K+1):
+        for r in B['1']:
+            m.addConstr(x[p][k], GRB.LESS_EQUAL, B[k][r]['Correccion']*E[p][k], name= '')
 
 
+##7
+for p in N:
+    for k in range(1,K+1):
+        for r in B['1']:
+            m.addConstr(x[p][k], GRB.LESS_EQUAL, B[k][r]['Examen']*E[p][k], name= '')
 
 
+##Funcion Objetivo
+obj={}
+Obj[0]=LinExpr()
+Obj[1]=LinExpr()
+
+for p in N:
+    for k in range(1,K+1):
+        Obj[0].addTerms(1.0, x[p][k]*C[p][k])
+    for s in range(1,S+1):
+        Obj[1].addTerms(1.0, Z[p][s]*H[p])
+
+for e in Obj:
+    model.setObjectiveN(obj[i], i, SetObjPriority[i], SetObjWeight[i], name='Set' + str(i))
 
 
-
-
-
-
-
-###
-## 3. each patient can have surgery at most once
-    for i in range(I):
-        # for each patient add a constraint
-        lexp = gp.LinExpr()
-        for j in range(J):
-            for k in x[i][j].keys():
-                for t in x[i][j][k].keys():
-                    lexp.addTerms(1.0, x[i][j][k][t])
-        # add constraints
-        orMo.addConstr(lexp, gp.GRB.LESS_EQUAL, 1.0, "patient[%d]"%(i))
 
 
 
