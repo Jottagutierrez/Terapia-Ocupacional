@@ -1,0 +1,724 @@
+
+Gurobi 7.5.2 (win64, Python) logging started 01/20/18 17:42:54
+
+Academic license - for non-commercial use only
+
+Gurobi 7.5.2 (win64, Python) logging started 01/20/18 17:53:33
+
+Academic license - for non-commercial use only
+
+Gurobi 7.5.2 (win64, Python) logging started 01/20/18 18:03:13
+
+Academic license - for non-commercial use only
+
+Gurobi 7.5.2 (win64, Python) logging started 01/20/18 18:30:57
+
+Academic license - for non-commercial use only
+Optimize a model with 302 rows, 105 columns and 385 nonzeros
+Variable types: 0 continuous, 105 integer (105 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 4e+00]
+  Objective range  [1e+00, 9e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+
+---------------------------------------------------------------------------
+Multi-objectives: starting optimization with 2 objectives ... 
+---------------------------------------------------------------------------
+
+Multi-objectives: applying initial presolve ...
+---------------------------------------------------------------------------
+
+Presolve removed 280 rows and 49 columns
+Presolve time: 0.00s
+
+---------------------------------------------------------------------------
+Multi-objectives: solved in 0.03 seconds
+Model is infeasible
+
+Optimize a model with 302 rows, 105 columns and 385 nonzeros
+Variable types: 0 continuous, 105 integer (105 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 4e+00]
+  Objective range  [1e+00, 9e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+
+---------------------------------------------------------------------------
+Multi-objectives: starting optimization with 2 objectives ... 
+---------------------------------------------------------------------------
+
+Multi-objectives: applying initial presolve ...
+---------------------------------------------------------------------------
+
+Presolve removed 280 rows and 49 columns
+Presolve time: 0.00s
+
+---------------------------------------------------------------------------
+Multi-objectives: solved in 0.03 seconds
+Model is infeasible
+
+
+Gurobi 7.5.2 (win64, Python) logging started 01/20/18 18:49:09
+
+Academic license - for non-commercial use only
+Optimize a model with 302 rows, 105 columns and 385 nonzeros
+Variable types: 0 continuous, 105 integer (105 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 4e+00]
+  Objective range  [1e+00, 9e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+
+---------------------------------------------------------------------------
+Multi-objectives: starting optimization with 2 objectives (1 combined) ...
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+
+Multi-objectives: optimize objective 1 (weighted) ...
+---------------------------------------------------------------------------
+
+Optimize a model with 302 rows, 105 columns and 385 nonzeros
+Variable types: 0 continuous, 105 integer (105 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 4e+00]
+  Objective range  [1e+00, 9e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Presolve removed 280 rows and 98 columns
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.04 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+---------------------------------------------------------------------------
+Multi-objectives: solved in 0.05 seconds
+Model is infeasible
+
+Warning: linear constraint 98 and linear constraint 99 have the same name "C1"
+Optimize a model with 302 rows, 105 columns and 385 nonzeros
+Variable types: 0 continuous, 105 integer (105 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 4e+00]
+  Objective range  [1e+00, 9e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+
+---------------------------------------------------------------------------
+Multi-objectives: starting optimization with 2 objectives (1 combined) ...
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+
+Multi-objectives: optimize objective 1 (weighted) ...
+---------------------------------------------------------------------------
+
+Optimize a model with 302 rows, 105 columns and 385 nonzeros
+Variable types: 0 continuous, 105 integer (105 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 4e+00]
+  Objective range  [1e+00, 9e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Presolve removed 280 rows and 98 columns
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.04 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+---------------------------------------------------------------------------
+Multi-objectives: solved in 0.05 seconds
+Model is infeasible
+
+Warning: linear constraint 98 and linear constraint 99 have the same name "C1"
+Optimize a model with 302 rows, 105 columns and 385 nonzeros
+Variable types: 0 continuous, 105 integer (105 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 4e+00]
+  Objective range  [1e+00, 9e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+
+---------------------------------------------------------------------------
+Multi-objectives: starting optimization with 2 objectives (1 combined) ...
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+
+Multi-objectives: optimize objective 1 (weighted) ...
+---------------------------------------------------------------------------
+
+Optimize a model with 302 rows, 105 columns and 385 nonzeros
+Variable types: 0 continuous, 105 integer (105 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 4e+00]
+  Objective range  [1e+00, 9e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Presolve removed 280 rows and 98 columns
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.03 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+---------------------------------------------------------------------------
+Multi-objectives: solved in 0.04 seconds
+Model is infeasible
+
+Warning: linear constraint 98 and linear constraint 99 have the same name "C1"
+Optimize a model with 176 rows, 105 columns and 259 nonzeros
+Variable types: 0 continuous, 105 integer (105 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 4e+00]
+  Objective range  [1e+00, 9e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+
+---------------------------------------------------------------------------
+Multi-objectives: starting optimization with 2 objectives (1 combined) ...
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+
+Multi-objectives: optimize objective 1 (weighted) ...
+---------------------------------------------------------------------------
+
+Optimize a model with 176 rows, 105 columns and 259 nonzeros
+Variable types: 0 continuous, 105 integer (105 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 4e+00]
+  Objective range  [1e+00, 9e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Found heuristic solution: objective 11.0000000
+Presolve removed 176 rows and 105 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.04 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 2: 7 11 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 7.000000000000e+00, best bound 7.000000000000e+00, gap 0.0000%
+
+---------------------------------------------------------------------------
+Multi-objectives: solved in 0.05 seconds, solution count 2
+
+Warning: linear constraint 98 and linear constraint 99 have the same name "C1"
+Optimize a model with 176 rows, 105 columns and 259 nonzeros
+Variable types: 0 continuous, 105 integer (105 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 4e+00]
+  Objective range  [1e+00, 9e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+
+---------------------------------------------------------------------------
+Multi-objectives: starting optimization with 2 objectives (1 combined) ...
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+
+Multi-objectives: optimize objective 1 (weighted) ...
+---------------------------------------------------------------------------
+
+Optimize a model with 176 rows, 105 columns and 259 nonzeros
+Variable types: 0 continuous, 105 integer (105 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 4e+00]
+  Objective range  [1e+00, 9e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Found heuristic solution: objective 11.0000000
+Presolve removed 176 rows and 105 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.04 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 2: 7 11 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 7.000000000000e+00, best bound 7.000000000000e+00, gap 0.0000%
+
+---------------------------------------------------------------------------
+Multi-objectives: solved in 0.05 seconds, solution count 2
+
+Warning: linear constraint 98 and linear constraint 99 have the same name "C1"
+Optimize a model with 176 rows, 105 columns and 259 nonzeros
+Variable types: 0 continuous, 105 integer (105 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 4e+00]
+  Objective range  [6e+00, 1e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+
+---------------------------------------------------------------------------
+Multi-objectives: starting optimization with 2 objectives (1 combined) ...
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+
+Multi-objectives: optimize objective 1 (weighted) ...
+---------------------------------------------------------------------------
+
+Optimize a model with 176 rows, 105 columns and 259 nonzeros
+Variable types: 0 continuous, 105 integer (105 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 4e+00]
+  Objective range  [6e+00, 1e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Found heuristic solution: objective 30.0000000
+Presolve removed 176 rows and 105 columns
+Presolve time: 0.00s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.07 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 1: 30 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.000000000000e+01, best bound 3.000000000000e+01, gap 0.0000%
+
+---------------------------------------------------------------------------
+Multi-objectives: solved in 0.09 seconds, solution count 1
+
+Warning: variable name "x[Claudia Prieto (CP),1]" has a space
+Warning: linear constraint 800 and linear constraint 801 have the same name "C4"
+Warning: to let Gurobi read it back, use rlp format
+Optimize a model with 3113 rows, 23530 columns and 23930 nonzeros
+Variable types: 0 continuous, 23530 integer (23530 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+01, 1e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 8e+00]
+
+---------------------------------------------------------------------------
+Multi-objectives: starting optimization with 2 objectives (1 combined) ...
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+
+Multi-objectives: optimize objective 1 (weighted) ...
+---------------------------------------------------------------------------
+
+Optimize a model with 3113 rows, 23530 columns and 23930 nonzeros
+Variable types: 0 continuous, 23530 integer (23530 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+01, 1e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 8e+00]
+Found heuristic solution: objective 23130.000000
+Presolve removed 3113 rows and 23530 columns
+Presolve time: 0.01s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.05 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 1: 23130 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.313000000000e+04, best bound 2.313000000000e+04, gap 0.0000%
+
+---------------------------------------------------------------------------
+Multi-objectives: solved in 0.07 seconds, solution count 1
+
+Warning: variable name "x[Claudia Prieto (CP),1]" has a space
+Warning: linear constraint 800 and linear constraint 801 have the same name "C4"
+Warning: to let Gurobi read it back, use rlp format
+Optimize a model with 3113 rows, 23530 columns and 23930 nonzeros
+Variable types: 0 continuous, 23530 integer (23530 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+01, 1e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 8e+00]
+
+---------------------------------------------------------------------------
+Multi-objectives: starting optimization with 2 objectives (1 combined) ...
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+
+Multi-objectives: optimize objective 1 (weighted) ...
+---------------------------------------------------------------------------
+
+Optimize a model with 3113 rows, 23530 columns and 23930 nonzeros
+Variable types: 0 continuous, 23530 integer (23530 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+01, 1e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 8e+00]
+Found heuristic solution: objective 23130.000000
+Presolve removed 3113 rows and 23530 columns
+Presolve time: 0.01s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.05 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 1: 23130 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.313000000000e+04, best bound 2.313000000000e+04, gap 0.0000%
+
+---------------------------------------------------------------------------
+Multi-objectives: solved in 0.07 seconds, solution count 1
+
+Warning: variable name "x[Claudia Prieto (CP),1]" has a space
+Warning: linear constraint 800 and linear constraint 801 have the same name "C4"
+Warning: to let Gurobi read it back, use rlp format
+Optimize a model with 3113 rows, 23530 columns and 23530 nonzeros
+Variable types: 0 continuous, 23530 integer (23530 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+01, 1e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 8e+00]
+
+---------------------------------------------------------------------------
+Multi-objectives: starting optimization with 2 objectives (1 combined) ...
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+
+Multi-objectives: optimize objective 1 (weighted) ...
+---------------------------------------------------------------------------
+
+Optimize a model with 3113 rows, 23530 columns and 23530 nonzeros
+Variable types: 0 continuous, 23530 integer (23530 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+01, 1e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 8e+00]
+Found heuristic solution: objective 23130.000000
+Presolve removed 3113 rows and 23530 columns
+Presolve time: 0.01s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.05 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 1: 23130 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.313000000000e+04, best bound 2.313000000000e+04, gap 0.0000%
+
+---------------------------------------------------------------------------
+Multi-objectives: solved in 0.07 seconds, solution count 1
+
+Warning: variable name "x[Claudia Prieto (CP),1]" has a space
+Warning: linear constraint 800 and linear constraint 801 have the same name "C4"
+Warning: to let Gurobi read it back, use rlp format
+Optimize a model with 3113 rows, 23530 columns and 23530 nonzeros
+Variable types: 0 continuous, 23530 integer (23530 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+01, 1e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 8e+00]
+
+---------------------------------------------------------------------------
+Multi-objectives: starting optimization with 2 objectives ... 
+---------------------------------------------------------------------------
+
+Multi-objectives: applying initial presolve ...
+---------------------------------------------------------------------------
+
+Presolve removed 800 rows and 0 columns
+Presolve time: 0.04s
+Presolved: 2313 rows and 23530 columns
+---------------------------------------------------------------------------
+
+Multi-objectives: optimize objective 1 (Set0) ...
+---------------------------------------------------------------------------
+
+Found heuristic solution: objective 23130.000000
+Presolve removed 2313 rows and 23530 columns
+Presolve time: 0.01s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.10 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 1: 23130 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.313000000000e+04, best bound 2.313000000000e+04, gap 0.0000%
+---------------------------------------------------------------------------
+
+Multi-objectives: optimize objective 2 (Set1) ...
+---------------------------------------------------------------------------
+
+
+Loaded MIP start with objective 0
+
+
+Explored 0 nodes (0 simplex iterations) in 0.13 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 1: 0 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+
+---------------------------------------------------------------------------
+Multi-objectives: solved in 0.14 seconds, solution count 1
+
+Warning: variable name "x[Claudia Prieto (CP),1]" has a space
+Warning: linear constraint 0 and linear constraint 1 have the same name "C1"
+Warning: to let Gurobi read it back, use rlp format
+Optimize a model with 3113 rows, 23530 columns and 23530 nonzeros
+Variable types: 0 continuous, 23530 integer (23530 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+01, 1e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 8e+00]
+
+---------------------------------------------------------------------------
+Multi-objectives: starting optimization with 2 objectives ... 
+---------------------------------------------------------------------------
+
+Multi-objectives: applying initial presolve ...
+---------------------------------------------------------------------------
+
+Presolve removed 800 rows and 0 columns
+Presolve time: 0.03s
+Presolved: 2313 rows and 23530 columns
+---------------------------------------------------------------------------
+
+Multi-objectives: optimize objective 1 (Set0) ...
+---------------------------------------------------------------------------
+
+Found heuristic solution: objective 23130.000000
+Presolve removed 2313 rows and 23530 columns
+Presolve time: 0.01s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.08 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 1: 23130 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.313000000000e+04, best bound 2.313000000000e+04, gap 0.0000%
+---------------------------------------------------------------------------
+
+Multi-objectives: optimize objective 2 (Set1) ...
+---------------------------------------------------------------------------
+
+
+Loaded MIP start with objective 0
+
+
+Explored 0 nodes (0 simplex iterations) in 0.11 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 1: 0 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+
+---------------------------------------------------------------------------
+Multi-objectives: solved in 0.12 seconds, solution count 1
+
+Warning: variable name "x[Claudia Prieto (CP),1]" has a space
+Warning: linear constraint 0 and linear constraint 1 have the same name "C1"
+Warning: to let Gurobi read it back, use rlp format
+Optimize a model with 3113 rows, 23530 columns and 23530 nonzeros
+Variable types: 0 continuous, 23530 integer (23530 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+01, 1e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 8e+00]
+
+---------------------------------------------------------------------------
+Multi-objectives: starting optimization with 2 objectives ... 
+---------------------------------------------------------------------------
+
+Multi-objectives: applying initial presolve ...
+---------------------------------------------------------------------------
+
+Presolve removed 800 rows and 0 columns
+Presolve time: 0.03s
+Presolved: 2313 rows and 23530 columns
+---------------------------------------------------------------------------
+
+Multi-objectives: optimize objective 1 (Set0) ...
+---------------------------------------------------------------------------
+
+Found heuristic solution: objective 23130.000000
+Presolve removed 2313 rows and 23530 columns
+Presolve time: 0.01s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.08 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 1: 23130 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.313000000000e+04, best bound 2.313000000000e+04, gap 0.0000%
+---------------------------------------------------------------------------
+
+Multi-objectives: optimize objective 2 (Set1) ...
+---------------------------------------------------------------------------
+
+
+Loaded MIP start with objective 0
+
+
+Explored 0 nodes (0 simplex iterations) in 0.11 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 1: 0 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+
+---------------------------------------------------------------------------
+Multi-objectives: solved in 0.12 seconds, solution count 1
+
+Warning: variable name "x[Claudia Prieto (CP),1]" has a space
+Warning: linear constraint 0 and linear constraint 1 have the same name "C1"
+Warning: to let Gurobi read it back, use rlp format
+Optimize a model with 3113 rows, 23530 columns and 23530 nonzeros
+Variable types: 0 continuous, 23530 integer (23530 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+01, 1e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 8e+00]
+
+---------------------------------------------------------------------------
+Multi-objectives: starting optimization with 2 objectives ... 
+---------------------------------------------------------------------------
+
+Multi-objectives: applying initial presolve ...
+---------------------------------------------------------------------------
+
+Presolve removed 800 rows and 0 columns
+Presolve time: 0.04s
+Presolved: 2313 rows and 23530 columns
+---------------------------------------------------------------------------
+
+Multi-objectives: optimize objective 1 (Set0) ...
+---------------------------------------------------------------------------
+
+Found heuristic solution: objective 23130.000000
+Presolve removed 2313 rows and 23530 columns
+Presolve time: 0.01s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.09 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 1: 23130 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.313000000000e+04, best bound 2.313000000000e+04, gap 0.0000%
+---------------------------------------------------------------------------
+
+Multi-objectives: optimize objective 2 (Set1) ...
+---------------------------------------------------------------------------
+
+
+Loaded MIP start with objective 0
+
+
+Explored 0 nodes (0 simplex iterations) in 0.11 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 1: 0 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+
+---------------------------------------------------------------------------
+Multi-objectives: solved in 0.13 seconds, solution count 1
+
+
+Gurobi 7.5.2 (win64, Python) logging started 01/20/18 21:02:13
+
+Academic license - for non-commercial use only
+Warning: variable name "x[Claudia Prieto (CP),1]" has a space
+Warning: linear constraint 0 and linear constraint 1 have the same name "C1"
+Warning: to let Gurobi read it back, use rlp format
+Optimize a model with 3113 rows, 23530 columns and 23530 nonzeros
+Variable types: 0 continuous, 23530 integer (23530 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+01, 1e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 8e+00]
+
+---------------------------------------------------------------------------
+Multi-objectives: starting optimization with 2 objectives ... 
+---------------------------------------------------------------------------
+
+Multi-objectives: applying initial presolve ...
+---------------------------------------------------------------------------
+
+Presolve removed 800 rows and 0 columns
+Presolve time: 0.03s
+Presolved: 2313 rows and 23530 columns
+---------------------------------------------------------------------------
+
+Multi-objectives: optimize objective 1 (Set0) ...
+---------------------------------------------------------------------------
+
+Found heuristic solution: objective 23130.000000
+Presolve removed 2313 rows and 23530 columns
+Presolve time: 0.01s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.09 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 1: 23130 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.313000000000e+04, best bound 2.313000000000e+04, gap 0.0000%
+---------------------------------------------------------------------------
+
+Multi-objectives: optimize objective 2 (Set1) ...
+---------------------------------------------------------------------------
+
+
+Loaded MIP start with objective 0
+
+
+Explored 0 nodes (0 simplex iterations) in 0.11 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 1: 0 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+
+---------------------------------------------------------------------------
+Multi-objectives: solved in 0.12 seconds, solution count 1
+
+
+Gurobi 7.5.2 (win64, Python) logging started 01/20/18 21:27:29
+
+Academic license - for non-commercial use only
