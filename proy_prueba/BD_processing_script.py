@@ -36,7 +36,6 @@ DATA_matrix_Weeks = ini.F_translate_into_week(xl_sheet).week_L
 DATA_matrix_Pract = ini.F_translate_into_week(xl_sheet).pract_L
 DATA_matrix_Act = ini.F_translate_into_week(xl_sheet).act_L
 DATA_matrix_Cent = ini.F_translate_into_week(xl_sheet).cent_L
-N_est = ini.F_translate_into_week(xl_sheet).est_L
 ######################################################
 
 
@@ -85,4 +84,4 @@ B['AAA - Conteo'] = cont
 print(B)
 '''
 #
-#A = json.load(open(param_path_list['S']))
+A = json.load(open(param_path_list['Conj_E']))

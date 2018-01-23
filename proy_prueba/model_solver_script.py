@@ -4,7 +4,6 @@
 
 from gurobipy import *
 import json
-from pprint import pprint
 
 #Detallar todas las direcciones de los archivos...
 files_folder_path = 'proy_files'
@@ -72,7 +71,7 @@ for p in prof_keys:
     x_var_des[p] = {}
     for k in act_keys:
         if k in Conj_E[p]:
-            x_var_des[p][k] = m.addVar(vtype=GRB.BINARY, name="X[%s,%d]"%(p,k))
+            x_var_des[p][k] = m.addVar(vtype=GRB.BINARY, name="X[%s,%d]"%(p,k))            
             #Solo se crea la variable si se cumple la condición de
             #match de especialidad, lo cual está detallado en el conjunto E...            
 x_var_des = dict( [(k,v) for k,v in x_var_des.items() if len(v)>0])
@@ -187,3 +186,83 @@ m.setObjective(model_Objective, GRB.MINIMIZE)
 m.write('model_view.rlp')
 m.optimize()
 ######################################################
+
+
+#Visualización del resultado...
+'''
+var_x = {}
+var_tiempo = 0
+for p in prof_keys:    
+    for k in act_keys:        
+        try:
+            #print(x_var_des[p][k])
+            var_name = "X[%s,%d]"%(p,k)
+            v = m.getVarByName(var_name) 
+            if v.x == 1:
+                var_x[v.varName] = v.x                
+                var_tiempo = var_tiempo + v.x * T[str(k)]
+        except:
+            pass        
+
+var_y = {}    
+for p in prof_keys:    
+    for s in week_keys:        
+        try:
+            var_name = "Y[%s,%s]"%(p,s)
+            v = m.getVarByName(var_name)            
+            var_y[v.varName] = v.x
+        except:
+            pass
+
+var_g = {}    
+for p in prof_keys:    
+    for j in cent_keys:
+        try:
+            var_name = "G[%s,%s]"%(p,j)
+            v = m.getVarByName(var_name)            
+            var_g[v.varName] = v.x
+        except:
+            pass
+
+with open('model_result_X.txt', 'w') as outfile:
+    json.dump(var_x, outfile)
+with open('model_result_Y.txt', 'w') as outfile:
+    json.dump(var_y, outfile)
+with open('model_result_G.txt', 'w') as outfile:
+    json.dump(var_g, outfile)
+    
+X = json.load(open('model_result_X.txt'))
+Y = json.load(open('model_result_Y.txt'))
+G = json.load(open('model_result_G.txt'))
+
+total_asignaciones = 0
+for key in X.keys():
+    total_asignaciones = total_asignaciones + X[key]
+print(total_asignaciones)
+
+total_sobrecarga = 0
+for key in Y.keys():
+    total_sobrecarga = total_sobrecarga + Y[key]
+print(total_sobrecarga)
+
+total_profcentros = 0
+for key in G.keys():
+    total_profcentros = total_profcentros + G[key]
+print(total_profcentros)
+
+print(var_tiempo)
+
+var_res={}
+for v in m.getVars():
+    if v.x == 1:
+        var_res[v.varName]=v.x
+with open('resultado1.txt', 'w') as file:
+     file.write(json.dumps(var_res))
+
+
+conteo = []
+for p in prof_keys:
+    for k in Conj_E[p]:
+        conteo.append(k)
+conteo = list(set(conteo))
+print(len(conteo))'''

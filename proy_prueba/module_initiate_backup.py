@@ -199,12 +199,12 @@ def F_create_param_file(act_list, prof_list, cent_list,
                 act_list[k]['Tipo'] == 'Examen'):
                 if act_list[k]['Especialidad'] == prof_list[p]['Especialidad']:
                     Conj_E[p].append(k)
-                #elif act_list[k]['Especialidad'] == prof_list[p]['Sub Especialidad']:
-                 #   Conj_E[p].append(k)
+                elif act_list[k]['Especialidad'] == prof_list[p]['Sub Especialidad']:
+                    Conj_E[p].append(k)
             elif act_list[k]['Tipo'] == 'Supervision':
-                #if prof_list[p]['Especialidad'] == 'TODO':
-                 #   Conj_E[p].append(k)
-                if act_list[k]['Practica'] == 'Mencion':
+                if prof_list[p]['Especialidad'] == 'TODO':
+                    Conj_E[p].append(k)
+                elif act_list[k]['Practica'] == 'Mencion':
                     if act_list[k]['Especialidad'] == prof_list[p]['Especialidad']:
                         Conj_E[p].append(k)
                     elif act_list[k]['Especialidad'] == prof_list[p]['Sub Especialidad']:
