@@ -72,7 +72,7 @@ for p in prof_keys:
     x_var_des[p] = {}
     for k in act_keys:
         if k in Conj_E[p]:
-            x_var_des[p][k] = m.addVar(vtype=GRB.BINARY, name="x_var_des[%s,%d]"%(p,k))
+            x_var_des[p][k] = m.addVar(vtype=GRB.BINARY, name="X[%s,%d]"%(p,k))
             #Solo se crea la variable si se cumple la condición de
             #match de especialidad, lo cual está detallado en el conjunto E...            
 x_var_des = dict( [(k,v) for k,v in x_var_des.items() if len(v)>0])
@@ -86,14 +86,14 @@ y_var_est = {}
 for p in prof_keys:
     y_var_est[p] = {}
     for s in week_keys:
-        y_var_est[p][s] = m.addVar(vtype=GRB.INTEGER, name="y_var_est[%s,%s]"%(p,s))
+        y_var_est[p][s] = m.addVar(vtype=GRB.INTEGER, name="Y[%s,%s]"%(p,s))
 
     #Si el profesor 'p' visita/realiza una supervisión en el centro 'j'...
 g_var_est = {}
 for p in prof_keys:
     g_var_est[p] = {}
     for j in cent_keys:
-        g_var_est[p][j]=m.addVar(vtype=GRB.BINARY, name="g_var_est[%s,%s]"%(p,j))
+        g_var_est[p][j]=m.addVar(vtype=GRB.BINARY, name="G[%s,%s]"%(p,j))
 ######################################################
 
 
@@ -184,5 +184,6 @@ model_Objective.add(Obj['Arg_2'], 1 - Delta)
     #Expresión lineal que reune ambos objetivos...
 
 m.setObjective(model_Objective, GRB.MINIMIZE)
+m.write('model_view.rlp')
 m.optimize()
 ######################################################

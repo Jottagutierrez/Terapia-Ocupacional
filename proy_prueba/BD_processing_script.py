@@ -55,6 +55,7 @@ ini.F_create_param_file(DATA_matrix_Act, DATA_matrix_Prof, DATA_matrix_Cent,
                         param_path_list)
 ######################################################
 
+'''
 A = []
 pi = 0
 inter = 0
@@ -70,5 +71,18 @@ print(pi)
 print(inter)
 print(pi + inter)
 
+
+B = {}
+cont = 0
+for j in N_est['Practica - I'].keys():
+    suma = 0    
+    if N_est['Practica - I'][j]['Especialidad'] == 'PEDIATRIA':
+        cont = cont + 1
+        for i in range (1,7):
+            suma = suma + N_est['Practica - I'][j][i]
+            B[j] = suma
+B['AAA - Conteo'] = cont    
+print(B)
+'''
 #
 #A = json.load(open(param_path_list['S']))
