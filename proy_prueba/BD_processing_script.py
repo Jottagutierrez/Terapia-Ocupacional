@@ -2,7 +2,7 @@
 
 #Importar librerías y paquetes...
 import module_initiate as ini
-import json
+#import json
 ######################################################
 
 
@@ -84,4 +84,13 @@ B['AAA - Conteo'] = cont
 print(B)
 '''
 #
-A = json.load(open(param_path_list['Conj_E']))
+'''
+Conj_E = json.load(open(param_path_list['Conj_E']))
+prof_keys = json.load(open(param_path_list['prof_keys']))
+conteo = []
+for p in prof_keys:
+    for k in Conj_E[p]:
+        conteo.append(k)
+conteo = list(set(conteo))
+print(len(conteo))
+'''

@@ -189,7 +189,7 @@ m.optimize()
 
 
 #Visualización del resultado...
-'''
+
 var_x = {}
 var_tiempo = 0
 for p in prof_keys:    
@@ -265,4 +265,4 @@ for p in prof_keys:
     for k in Conj_E[p]:
         conteo.append(k)
 conteo = list(set(conteo))
-print(len(conteo))'''
+print(len(conteo))
