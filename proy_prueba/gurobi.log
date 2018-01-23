@@ -1,0 +1,256 @@
+
+Gurobi 7.5.2 (win64, Python) logging started 01/22/18 17:56:47
+
+Academic license - for non-commercial use only
+
+Gurobi 7.5.2 (win64, Python) logging started 01/22/18 18:31:25
+
+Academic license - for non-commercial use only
+
+Gurobi 7.5.2 (win64, Python) logging started 01/22/18 18:33:02
+
+Academic license - for non-commercial use only
+
+Gurobi 7.5.2 (win64, Python) logging started 01/22/18 18:37:51
+
+Academic license - for non-commercial use only
+
+Gurobi 7.5.2 (win64, Python) logging started 01/22/18 18:46:26
+
+Academic license - for non-commercial use only
+
+Gurobi 7.5.2 (win64, Python) logging started 01/22/18 18:54:33
+
+Academic license - for non-commercial use only
+
+Gurobi 7.5.2 (win64, Python) logging started 01/22/18 19:05:43
+
+Academic license - for non-commercial use only
+
+Gurobi 7.5.2 (win64, Python) logging started 01/22/18 19:07:58
+
+Academic license - for non-commercial use only
+
+Gurobi 7.5.2 (win64, Python) logging started 01/22/18 19:25:01
+
+Academic license - for non-commercial use only
+
+Gurobi 7.5.2 (win64, Python) logging started 01/22/18 19:32:13
+
+Academic license - for non-commercial use only
+
+Gurobi 7.5.2 (win64, Python) logging started 01/22/18 19:58:31
+
+Academic license - for non-commercial use only
+
+Gurobi 7.5.2 (win64, Python) logging started 01/22/18 20:21:47
+
+Academic license - for non-commercial use only
+
+Gurobi 7.5.2 (win64, Python) logging started 01/22/18 20:22:04
+
+Academic license - for non-commercial use only
+Optimize a model with 8438 rows, 10140 columns and 32344 nonzeros
+Variable types: 0 continuous, 10140 integer (9867 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+00]
+  Objective range  [3e+00, 4e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.02 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 7.5.2 (win64, Python) logging started 01/22/18 20:24:19
+
+Academic license - for non-commercial use only
+Optimize a model with 8438 rows, 10140 columns and 32344 nonzeros
+Variable types: 0 continuous, 10140 integer (9867 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+00]
+  Objective range  [3e+00, 4e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 3e+01]
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.02 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+Optimize a model with 8438 rows, 10140 columns and 32344 nonzeros
+Variable types: 0 continuous, 10140 integer (9867 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+00]
+  Objective range  [5e+00, 1e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 3e+01]
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.02 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 7.5.2 (win64, Python) logging started 01/22/18 20:24:48
+
+Academic license - for non-commercial use only
+Optimize a model with 8438 rows, 10140 columns and 32344 nonzeros
+Variable types: 0 continuous, 10140 integer (9867 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+00]
+  Objective range  [5e+00, 1e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 3e+01]
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.02 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 7.5.2 (win64, Python) logging started 01/22/18 20:25:23
+
+Academic license - for non-commercial use only
+Optimize a model with 6998 rows, 10140 columns and 23205 nonzeros
+Variable types: 0 continuous, 10140 integer (9867 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+00]
+  Objective range  [5e+00, 1e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 3e+01]
+Found heuristic solution: objective 0.0000000
+
+Explored 0 nodes (0 simplex iterations) in 0.02 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 1: 0 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+Optimize a model with 6998 rows, 10140 columns and 23205 nonzeros
+Variable types: 0 continuous, 10140 integer (9867 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+00]
+  Objective range  [3e+00, 4e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 3e+01]
+Found heuristic solution: objective 0.0000000
+
+Explored 0 nodes (0 simplex iterations) in 0.02 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 1: 0 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+Optimize a model with 8382 rows, 10140 columns and 31616 nonzeros
+Variable types: 0 continuous, 10140 integer (9867 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+00]
+  Objective range  [3e+00, 4e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 3e+01]
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.02 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+Optimize a model with 8438 rows, 10140 columns and 32344 nonzeros
+Variable types: 0 continuous, 10140 integer (9867 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+00]
+  Objective range  [3e+00, 4e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 3e+01]
+Found heuristic solution: objective 0.0000000
+
+Explored 0 nodes (0 simplex iterations) in 0.01 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 1: 0 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0000%
+Optimize a model with 8165 rows, 10140 columns and 32071 nonzeros
+Variable types: 0 continuous, 10140 integer (9867 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+00]
+  Objective range  [3e+00, 4e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.01 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+Optimize a model with 8438 rows, 10140 columns and 32344 nonzeros
+Variable types: 0 continuous, 10140 integer (9867 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+00]
+  Objective range  [3e+00, 4e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.02 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+Optimize a model with 8438 rows, 10140 columns and 32344 nonzeros
+Variable types: 0 continuous, 10140 integer (9867 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+00]
+  Objective range  [5e+00, 1e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.01 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+Optimize a model with 8438 rows, 10140 columns and 32344 nonzeros
+Variable types: 0 continuous, 10140 integer (9867 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+00]
+  Objective range  [3e+00, 4e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.02 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
