@@ -206,12 +206,29 @@ def F_create_param_file(act_list, prof_list, cent_list,
         for s in Conj_U.keys():
             for k in Conj_U[s]:
                 if prof_list[p]['Especialidad'] == 'TODO':
-                        Conj_E[p].append(k)
+                    if act_list[k]['Tipo'] == 'Correccion':
+                        if prof_list[p]['Max Correccion'] != 'N/A':
+                            for q in range(int(prof_list[p]['Max Correccion'])):    
+                                Conj_E[p].append(k)
+                        elif prof_list[p]['Max Correccion'] == 'N/A':
+                            Conj_E[p].append(k)
+                    elif act_list[k]['Tipo'] == 'Supervision':
+                        if prof_list[p]['Max Supervision'] != 'N/A':
+                            for q in range(int(prof_list[p]['Max Supervision'])):
+                                Conj_E[p].append(k)
+                        elif prof_list[p]['Max Supervision'] == 'N/A':
+                            Conj_E[p].append(k)
+                    elif act_list[k]['Tipo'] == 'Examen':
+                        if prof_list[p]['Max Examen'] != 'N/A':
+                            for q in range(int(prof_list[p]['Max Examen'])):
+                                Conj_E[p].append(k)
+                        elif prof_list[p]['Max Examen'] == 'N/A':
+                            Conj_E[p].append(k)
                 elif prof_list[p]['Especialidad'] != 'TODO':
                     for es in act_list[k]['Especialidad']:
                         if act_list[k]['Tipo'] == 'Correccion':
                             if prof_list[p]['Max Correccion'] != 'N/A':
-                                for q in range(int(prof_list[p]['Max Correccion'])):                                
+                                for q in range(int(prof_list[p]['Max Correccion'])):
                                     if es == prof_list[p]['Especialidad']:
                                         Conj_E[p].append(k)
                             elif prof_list[p]['Max Correccion'] == 'N/A':

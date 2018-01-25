@@ -188,24 +188,25 @@ Obj['Arg_2'] = LinExpr()
 
 for p in prof_keys:
     for k in act_keys:
-        #if p in Conj_P['EXTERNO']:
+        if p in Conj_P['EXTERNO']:
             try:            
                 Obj['Arg_1.1'].addTerms(C_b[str(k)], x_var_des[p][k])
             except KeyError:
                 pass    
     for s in week_keys:
-        for j in cent_keys:        
-            try:
-                Obj['Arg_1.2'].addTerms(C_t[str(k)], z_var_est[s][j][p])
-            except KeyError:
-                pass    
-        #if p in Conj_P['INTERNO']:
+        for j in cent_keys:
+            if p in Conj_P['EXTERNO']:
+                try:
+                    Obj['Arg_1.2'].addTerms(C_t[str(k)], z_var_est[s][j][p])
+                except KeyError:
+                    pass    
+        if p in Conj_P['INTERNO']:
             Obj['Arg_2'].addTerms(H[p], y_var_est[p][s])
 
 Obj['Arg_1'].add(Obj['Arg_1.1'], 1)
 Obj['Arg_1'].add(Obj['Arg_1.2'], 1)
 
-Delta = 0.4
+Delta = 0.001
     #indicador de preferencia de un argumento por sobre el otro...
 
 model_Objective = LinExpr()
@@ -292,13 +293,15 @@ total_profcentros = 0
 for key in G.keys():
     total_profcentros = total_profcentros + G[key]
 
-var_res={}
-for v in m.getVars():
-    if v.x == 1:
-        var_res[v.varName]=v.x
-with open('resultado1.txt', 'w') as file:
-     file.write(json.dumps(var_res))
-
+'''
+for p in x_var_des.keys():
+    for k in x_var_des[p]:
+        print(x_var_des[p][k].x)
+'''
+for k in x_var_des['SUMIDERO']:
+    if x_var_des['SUMIDERO'][k].x == 1:
+        print(str(k) + ': ' + str(x_var_des['SUMIDERO'][k].x) + ' '
+              + Conj_B[k]['Tipo'])
 
 conteo = []
 for p in prof_keys:
