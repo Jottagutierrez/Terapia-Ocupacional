@@ -1,60 +1,52 @@
 # -*- coding: utf-8 -*-
 
 #Importar librerías y paquetes...
-
 from gurobipy import *
 import json
-
-#Detallar todas las direcciones de los archivos...
-files_folder_path = 'proy_files'
-param_folder_path = files_folder_path + '/parameters'
-param_path_list = {'prof_keys': param_folder_path + '/prof_keys.json',
-                   'cent_keys': param_folder_path + '/cent_keys.json',
-                   'week_keys': param_folder_path + '/week_keys.json',
-                   'act_keys': param_folder_path + '/act_keys.json',
-                   'Conj_U': param_folder_path + '/Conj_U.json',
-                   'Conj_A': param_folder_path + '/Conj_A.json',
-                   'Conj_E': param_folder_path + '/Conj_E.json',
-                   'T': param_folder_path + '/T.json',
-                   'D': param_folder_path + '/D.json',
-                   'S': param_folder_path + '/S.json',
-                   'H': param_folder_path + '/H.json',
-                   'C': param_folder_path + '/C.json'}
-######################################################
-
+import settings as st
+import model_export as mexp
 
 #Obtener los parámetros guardados en archivos JSON...
-T = json.load(open(param_path_list['T']))
+T = json.load(open(st.param_path_list['T']))
     #Tiempo de la actividad 'k'... T = {actividad: tiempo}
-D = json.load(open(param_path_list['D']))
+D = json.load(open(st.param_path_list['D']))
     #Disponibilidad del profesor 'p'... D = {profesor: disponibilidad}
-S = json.load(open(param_path_list['S']))
+S = json.load(open(st.param_path_list['S']))
     #Sobrecarga máxima que acepta el profesor 'p'... S = {profesor: sobrecarga}
-H = json.load(open(param_path_list['H']))
+H = json.load(open(st.param_path_list['H']))
     #"Costo" por hora de sobrecarga... H = {profesor: "costo"/epsilon}
-C = json.load(open(param_path_list['C']))
-    #Costo por subcontratación... C = {profesor: costo}
-
-Conj_U = json.load(open(param_path_list['Conj_U']))
+C_b = json.load(open(st.param_path_list['C_b']))
+    #Costo base para cada actividad (aplica solo para profesores externos)...
+    #C_b = {actividad: costo base}
+C_t = json.load(open(st.param_path_list['C_t']))
+    #Costo de traslado para cada actividad (aplica solo para profesores externos)...
+    #C_t = {actividad: costo traslado}
+Conj_U = json.load(open(st.param_path_list['Conj_U']))
     #Conjunto de actividades 'k' que se realizan en cada semana 's'...
     #U = {semana: [actividades]}
-Conj_A = json.load(open(param_path_list['Conj_A']))
+Conj_A = json.load(open(st.param_path_list['Conj_A']))
     #Conjunto de actividades 'k' de tipo 'supervisión' que se realizan en
     #el centro 'j'...
     #A = {centro: [actividades]
-Conj_E = json.load(open(param_path_list['Conj_E']))
+Conj_B = json.load(open(st.param_path_list['Conj_B']))
+    #Conjunto con la información de cada actividad 'k'...
+Conj_P = json.load(open(st.param_path_list['Conj_P']))
+    #Conjunto de profesores, agrupados por INTERNOS o EXTERNOS...
+Conj_S = json.load(open(st.param_path_list['Conj_S']))
+    #Conjunto de actividades que son de tipo Examen y Supervision...
+Conj_E = json.load(open(st.param_path_list['Conj_E']))
     #Conjunto de actividades 'k' que se le permite al profesor 'p' realizar
     #de acuerdo con el criterio de match de especialidades (cuando este es
     #pertinente: Correcciones, Examenes, actividades de Mención, etc.)...
     #E = {profesor: [actividades]}
 
-prof_keys = json.load(open(param_path_list['prof_keys']))
+prof_keys = json.load(open(st.param_path_list['prof_keys']))
     #listado de todos los profesores...
-cent_keys = json.load(open(param_path_list['cent_keys']))
+cent_keys = json.load(open(st.param_path_list['cent_keys']))
     #listado de todos los centros...
-week_keys = json.load(open(param_path_list['week_keys']))
+week_keys = json.load(open(st.param_path_list['week_keys']))
     #listado de todas las semanas en las que hay actividades...
-act_keys = json.load(open(param_path_list['act_keys']))
+act_keys = json.load(open(st.param_path_list['act_keys']))
     #listado de todas las actividades...
 ######################################################
 
@@ -82,6 +74,7 @@ x_var_des = dict( [(k,v) for k,v in x_var_des.items() if len(v)>0])
 #Definir las variables de estado...
     #Cantidad de horas de sobrecarga asignadas al profesor 'p' en la semana 's'...
 y_var_est = {}
+#for p in prof_keys:
 for p in prof_keys:
     y_var_est[p] = {}
     for s in week_keys:
@@ -92,22 +85,32 @@ g_var_est = {}
 for p in prof_keys:
     g_var_est[p] = {}
     for j in cent_keys:
-        g_var_est[p][j]=m.addVar(vtype=GRB.BINARY, name="G[%s,%s]"%(p,j))
+        g_var_est[p][j] = m.addVar(vtype=GRB.BINARY, name="G[%s,%s]"%(p,j))
+        
+z_var_est = {}
+for s in week_keys:
+    z_var_est[s] = {}
+    for j in cent_keys:
+        z_var_est[s][j] = {}
+        #for p in prof_keys:
+        for p in Conj_P['EXTERNO']:
+            z_var_est[s][j][p] = m.addVar(vtype=GRB.BINARY, name="Z[%s,%s,%s]"%(s,j,p))
 ######################################################
 
 
 #Restricción/Condición 1 - Disponibilidad horaria de cada profesor...
 for p in prof_keys:
-    for s in week_keys:
-        cond_1 = LinExpr()
-        for k in Conj_U[str(s)]:            
-            try:
-                cond_1.addTerms(T[str(k)], x_var_des[p][k])
-            except KeyError:
-            #para el caso en que se busque en la llave 'k'
-            #dentro de la variable X y esta no exista...
-                pass
-        m.addConstr(cond_1, GRB.LESS_EQUAL, D[p] + y_var_est[p][s], name='')
+    if D[p] != 'N/A':
+        for s in week_keys:
+            cond_1 = LinExpr()
+            for k in Conj_U[str(s)]:            
+                try:
+                    cond_1.addTerms(T[str(k)], x_var_des[p][k])
+                except KeyError:
+                #para el caso en que se busque en la llave 'k'
+                #dentro de la variable X y esta no exista...
+                    pass
+            m.addConstr(cond_1, GRB.LESS_EQUAL, D[p] + y_var_est[p][s], name='')
 ######################################################
 
 
@@ -156,23 +159,51 @@ for k in act_keys:
 ######################################################
 
 
+
+#Restricción/Condición 6 - Verificación si el profesor 'p' realiza supervisiones
+#o examenes en el centro 'j', en la semana 's'...
+for s in week_keys:
+    for j in cent_keys:
+        for p in Conj_P['EXTERNO']:
+            for k in Conj_U[str(s)]:
+                if k in Conj_S:
+                    try:
+                        m.addConstr(x_var_des[p][k], GRB.LESS_EQUAL,
+                                    z_var_est[s][j][p])
+                    except KeyError:
+                        pass
+######################################################
+
+
 #Función Objetivo...    
 Obj={}
 Obj['Arg_1'] = LinExpr()
+Obj['Arg_1.1'] = LinExpr()
     #Primer argumento, que indica la suma de los costos por asignarle
     #a un profesor 'p' la actividad 'k'...
+Obj['Arg_1.2'] = LinExpr()
 Obj['Arg_2'] = LinExpr()
     #Segundo argumento, que indica el total de horas de sobrecarga asignadas
     #a los profesores...
 
 for p in prof_keys:
     for k in act_keys:
-        try:
-            Obj['Arg_1'].addTerms(C[p], x_var_des[p][k])
-        except KeyError:
-            pass
+        #if p in Conj_P['EXTERNO']:
+            try:            
+                Obj['Arg_1.1'].addTerms(C_b[str(k)], x_var_des[p][k])
+            except KeyError:
+                pass    
     for s in week_keys:
-        Obj['Arg_2'].addTerms(H[p], y_var_est[p][s])
+        for j in cent_keys:        
+            try:
+                Obj['Arg_1.2'].addTerms(C_t[str(k)], z_var_est[s][j][p])
+            except KeyError:
+                pass    
+        #if p in Conj_P['INTERNO']:
+            Obj['Arg_2'].addTerms(H[p], y_var_est[p][s])
+
+Obj['Arg_1'].add(Obj['Arg_1.1'], 1)
+Obj['Arg_1'].add(Obj['Arg_1.2'], 1)
 
 Delta = 0.4
     #indicador de preferencia de un argumento por sobre el otro...
@@ -190,8 +221,8 @@ m.optimize()
 
 #Visualización del resultado...
 
-var_x = {}
-var_tiempo = 0
+result_x = {}
+result_tiempo = 0
 for p in prof_keys:    
     for k in act_keys:        
         try:
@@ -199,58 +230,67 @@ for p in prof_keys:
             var_name = "X[%s,%d]"%(p,k)
             v = m.getVarByName(var_name) 
             if v.x == 1:
-                var_x[v.varName] = v.x                
-                var_tiempo = var_tiempo + v.x * T[str(k)]
+                result_x[v.varName] = v.x                
+                result_tiempo = result_tiempo + v.x * T[str(k)]
         except:
             pass        
 
-var_y = {}    
+result_y = {}    
 for p in prof_keys:    
     for s in week_keys:        
         try:
             var_name = "Y[%s,%s]"%(p,s)
             v = m.getVarByName(var_name)            
-            var_y[v.varName] = v.x
+            result_y[v.varName] = v.x
         except:
             pass
 
-var_g = {}    
+result_g = {}    
 for p in prof_keys:    
     for j in cent_keys:
         try:
             var_name = "G[%s,%s]"%(p,j)
             v = m.getVarByName(var_name)            
-            var_g[v.varName] = v.x
+            result_g[v.varName] = v.x
         except:
             pass
 
+result_z = {}    
+for p in prof_keys:    
+    for j in cent_keys:
+        for s in week_keys:
+            try:
+                var_name = "Z[%s,%s,%s]"%(s,j,p)
+                v = m.getVarByName(var_name)            
+                result_g[v.varName] = v.x
+            except:
+                pass
+
 with open('model_result_X.txt', 'w') as outfile:
-    json.dump(var_x, outfile)
+    json.dump(result_x, outfile)
 with open('model_result_Y.txt', 'w') as outfile:
-    json.dump(var_y, outfile)
+    json.dump(result_y, outfile)
 with open('model_result_G.txt', 'w') as outfile:
-    json.dump(var_g, outfile)
-    
-X = json.load(open('model_result_X.txt'))
-Y = json.load(open('model_result_Y.txt'))
-G = json.load(open('model_result_G.txt'))
+    json.dump(result_g, outfile)
+with open('model_result_Z.txt', 'w') as outfile:
+    json.dump(result_z, outfile)
+
+X = result_x
+Y = result_y
+G = result_g
+Z = result_z
 
 total_asignaciones = 0
 for key in X.keys():
     total_asignaciones = total_asignaciones + X[key]
-print(total_asignaciones)
 
 total_sobrecarga = 0
 for key in Y.keys():
     total_sobrecarga = total_sobrecarga + Y[key]
-print(total_sobrecarga)
 
 total_profcentros = 0
 for key in G.keys():
     total_profcentros = total_profcentros + G[key]
-print(total_profcentros)
-
-print(var_tiempo)
 
 var_res={}
 for v in m.getVars():
@@ -265,4 +305,52 @@ for p in prof_keys:
     for k in Conj_E[p]:
         conteo.append(k)
 conteo = list(set(conteo))
+
+print('Actividades asignadas: ' + str(total_asignaciones))
+print('Hrs sobrecarga: ' + str(total_sobrecarga))
+print('Centros: ' + str(total_profcentros))
+print('Tiempo total demandado: ' + str(result_tiempo))
 print(len(conteo))
+
+mexp.F_export_model_results(Conj_B, Conj_U, X)
+
+#######################
+
+
+'''
+lista = list(X.keys())
+    
+diccionario={}        
+name=[]
+activity=[]
+for k in range(len(lista)):    
+    key_1=str(lista[k]).replace('X[','')
+    key_2=key_1.replace(']','')
+    Nombre, Actividad= key_2.split(',')
+    name.append(Nombre)
+    activity.append(Actividad)
+        
+
+Profes=list(set(name))
+for j in range(len(Profes)):
+    diccionario[Profes[j]]=[]
+    for e in range(len(name)): 
+        if Profes[j] == name[e]:
+            diccionario[Profes[j]].append(activity[e])
+
+
+workbook = xlsxwriter.Workbook('Calendario.xlsx')
+
+for docente in diccionario.keys():
+    worksheet = workbook.add_worksheet(docente)
+
+    row=0
+    for s in Conj_U.keys(): #en todas las semanas posibles
+        for k in Conj_U[s]: #en todas las actividades de esa semana
+            for act in diccionario[docente]:#todas las atividades realizados por el profesor
+                if k == int(act): #si la actividad realizada corresponde a las actividades realizadas esa semana
+                    worksheet.write(row, 0, s)
+                    worksheet.write(row, 1, act)
+                    worksheet.write(row, 2,Conj_B[k]['Centro'])
+                    row += 1
+workbook.close()'''
