@@ -88,13 +88,13 @@ for p in prof_keys:
         g_var_est[p][j] = m.addVar(vtype=GRB.BINARY, name="G[%s,%s]"%(p,j))
         
 z_var_est = {}
-for p in prof_keys:
-    z_var_est[p] = {}
+for s in week_keys:
+    z_var_est[s] = {}
     for j in cent_keys:
-        z_var_est[p][j] = {}
-        for s in week_keys:
+        z_var_est[s][j] = {}
+        for p in prof_keys:
         #for p in Conj_P['EXTERNO']:
-            z_var_est[p][j][s] = m.addVar(vtype=GRB.BINARY, name="Z[%s,%s,%s]"%(p,j,s))
+            z_var_est[s][j][p] = m.addVar(vtype=GRB.BINARY, name="Z[%s,%s,%s]"%(s,j,p))
 ######################################################
 
 
@@ -164,25 +164,16 @@ for k in act_keys:
 
 #Restricción/Condición 6 - Verificación si el profesor 'p' realiza supervisiones
 #o examenes en el centro 'j', en la semana 's'...
-for p in Conj_P['EXTERNO']:
-#for p in prof_keys:
+for s in week_keys:
     for j in cent_keys:
-        for s in week_keys:
-            #for k in Conj_U[str(s)]:
-            #    if k in Conj_A[j]:
-            for k in Conj_A[j]:
-                if s == Conj_B[k]['Semana']:
+        for p in Conj_P['EXTERNO']:
+            for k in Conj_U[str(s)]:
+                if k in Conj_S:
                     try:
                         m.addConstr(x_var_des[p][k], GRB.LESS_EQUAL,
-                                    z_var_est[p][j][s])
+                                    z_var_est[s][j][p])
                     except KeyError:
                         pass
-
-for p in Conj_P['EXTERNO']:
-#for p in prof_keys:
-    for j in cent_keys:
-        for s in week_keys:
-             m.addConstr(z_var_est[p][j][s], GRB.LESS_EQUAL, g_var_est[p][j])
 ######################################################
 
 
@@ -208,7 +199,7 @@ for p in prof_keys:
         for j in cent_keys:
             if p in Conj_P['EXTERNO']:
                 try:
-                    Obj['Arg_1.2'].addTerms(C_t[str(k)], z_var_est[p][j][s])
+                    Obj['Arg_1.2'].addTerms(C_t[str(k)], z_var_est[s][j][p])
                 except KeyError:
                     pass    
         if p in Conj_P['INTERNO']:
@@ -217,7 +208,7 @@ for p in prof_keys:
 Obj['Arg_1'].add(Obj['Arg_1.1'], 1)
 Obj['Arg_1'].add(Obj['Arg_1.2'], 1)
 
-Delta = 0.6
+Delta = 0.2
     #indicador de preferencia de un argumento por sobre el otro...
 
 model_Objective = LinExpr()
@@ -226,13 +217,12 @@ model_Objective.add(Obj['Arg_2'], 1 - Delta)
     #Expresión lineal que reune ambos objetivos...
 
 m.setObjective(model_Objective, GRB.MINIMIZE)
-m.write('model_view.lp')
+m.write('model_view.rlp')
 m.optimize()
 ######################################################
 
 
 #Visualización del resultado...
-
 result_x = {}
 result_tiempo = 0
 for p in prof_keys: 
@@ -297,24 +287,6 @@ for p in z_var_est.keys():
                 result_z[p][j][s] = z_var_est[p][j][s].x
     result_z[p] = dict( [(k,v) for k,v in result_z[p].items() if len(v)>0])
 result_z = dict( [(k) for k in result_z.items() if len(k)>0])
-'''
-for p in prof_keys:
-    result_z[p] = {}
-    for j in cent_keys:
-        result_z[p][j] = {}
-        for s in week_keys:            
-            try:
-                #var_name = "Z[%s,%s,%s]"%(s,j,p)
-                #v = m.getVarByName(var_name)            
-                v = z_var_est[s][j][p]
-                if v.x == 1:
-                    result_z[p][j][s] = v.x
-            except KeyError:
-                pass
-        #result_z[p][j] = dict( [(k,v) for k,v in result_z[p][j].items() if len(v)>0])
-    result_z[p] = dict( [(k,v) for k,v in result_z[p].items() if len(v)>0])
-result_z = dict( [(k) for k in result_z.items() if len(k)>0])
-'''
 
 with open((st.result_folder_path + '/model_result_X.txt'), 'w') as outfile:
     json.dump(result_x, outfile)
@@ -344,44 +316,16 @@ total_profcentros = 0
 for p in G.keys():
     for j in G[p].keys():
         total_profcentros = total_profcentros + G[p][j]
-
-######################################
-
-import xlsxwriter
-workbook = xlsxwriter.Workbook('Resumen_Sobrecargaa.xlsx')
-worksheet = workbook.add_worksheet()
-
-col=1
-for p in prof_keys:
-    for s in range(max(week_keys)+1):
-        try:
-            worksheet.write(s+1, col, Y[p][s])            
-        except KeyError:
-            worksheet.write(s+1, col, 0)
-        worksheet.write(s+1,0,s)
-    worksheet.write(0, col, p)
-    col+=1    
-workbook.close()
-
 '''
-for p in z_var_est.keys():
-    for j in z_var_est[p].keys():
-        for s in z_var_est[p][j].keys():
-            if z_var_est[p][j][s].x == 1:
-                #print(z_var_est[p][j][s].x)
-                print(str(p) + ' ' + str(j) + ' ' +
-                      str(s) + ' ' + str(z_var_est[p][j][s].x))
-
-
 for p in x_var_des.keys():
     for k in x_var_des[p]:
         print(x_var_des[p][k].x)
-
+'''
 for k in x_var_des['SUMIDERO']:
     if x_var_des['SUMIDERO'][k].x == 1:
         print(str(k) + ': ' + str(x_var_des['SUMIDERO'][k].x) + ' '
               + Conj_B[k]['Tipo'])
-'''
+
 print('Actividades asignadas: ' + str(total_asignaciones))
 print('Hrs sobrecarga: ' + str(total_sobrecarga))
 print('Centros: ' + str(total_profcentros))
