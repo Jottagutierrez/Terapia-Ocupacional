@@ -346,7 +346,7 @@ for p in G.keys():
         total_profcentros = total_profcentros + G[p][j]
 
 ######################################
-
+'''
 import xlsxwriter
 workbook = xlsxwriter.Workbook('Resumen_Sobrecargaa.xlsx')
 worksheet = workbook.add_worksheet()
@@ -361,7 +361,7 @@ for p in prof_keys:
         worksheet.write(s+1,0,s)
     worksheet.write(0, col, p)
     col+=1    
-workbook.close()
+workbook.close()'''
 
 '''
 for p in z_var_est.keys():
@@ -388,7 +388,7 @@ print('Centros: ' + str(total_profcentros))
 print('Tiempo total demandado: ' + str(result_tiempo))
 print('Costo: $' + str(Obj['Arg_1'].getValue()))
 
-mexp.F_export_model_results(Conj_B, Conj_U, X)
+mexp.F_export_model_results(Conj_B, Conj_U, Conj_S, X, Y, week_keys)
 
 #######################
 

@@ -266,8 +266,9 @@ def F_create_param_file(act_list, prof_list, cent_list,
                                     Conj_E[p].append(k)
                                 elif act_list[k]['Practica'] == 'Practica - II':
                                     Conj_E[p].append(k)
-        
-    Conj_S = week_list
+    Conj_S={}
+    for s in range(len(week_list)):
+        Conj_S[s] = week_list[s]
     
     T = {}
     C_b = {}
