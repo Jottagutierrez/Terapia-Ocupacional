@@ -32,26 +32,28 @@ def F_export_model_results(Conj_B, Conj_U, Conj_S, X, Y, week_keys):
     for docente in X.keys():
         worksheet = workbook.add_worksheet(docente)
         
-        worksheet.write(0, 0, 'Fecha Inicio')
-        worksheet.write(0, 1, 'Fecha Termino')
-        worksheet.write(0, 2, 'Actividad')
-        worksheet.write(0, 3, 'Centro')
-        worksheet.write(0, 4, 'Especialidad')
-        worksheet.write(0, 5, 'Tipo')
-        worksheet.write(0, 6, 'Practica')
+        worksheet.write(0, 0, 'Semana')
+        worksheet.write(0, 1, 'Fecha Inicio')
+        worksheet.write(0, 2, 'Fecha Termino')
+        worksheet.write(0, 3, 'Actividad')
+        worksheet.write(0, 4, 'Centro')
+        worksheet.write(0, 5, 'Especialidad')
+        worksheet.write(0, 6, 'Tipo')
+        worksheet.write(0, 7, 'Practica')
         
         row=1
         for s in Conj_U.keys(): #en todas las semanas posibles
             for k in Conj_U[s]: #en todas las actividades de esa semana
                 for act in X[docente]:#todas las atividades realizados por el profesor
                     if k == int(act): #si la actividad realizada corresponde a las actividades realizadas esa semana
-                        worksheet.write(row, 0, date.fromordinal((Conj_S[int(s)]['Fecha Inicio'])).strftime('%d/%m'))
-                        worksheet.write(row, 1, date.fromordinal((Conj_S[int(s)]['Fecha Termino'])).strftime('%d/%m'))
-                        worksheet.write(row, 2, act)
-                        worksheet.write(row, 3,Conj_B[k]['Centro'])
-                        worksheet.write(row, 4,', '.join(Conj_B[k]['Especialidad']))
-                        worksheet.write(row, 5,Conj_B[k]['Tipo'])
-                        worksheet.write(row, 6,Conj_B[k]['Practica'])
+                        worksheet.write(row, 0, s)
+                        worksheet.write(row, 1, date.fromordinal((Conj_S[int(s)]['Fecha Inicio'])).strftime('%d/%m'))
+                        worksheet.write(row, 2, date.fromordinal((Conj_S[int(s)]['Fecha Termino'])).strftime('%d/%m'))
+                        worksheet.write(row, 3, act)
+                        worksheet.write(row, 4,Conj_B[k]['Centro'])
+                        worksheet.write(row, 5,', '.join(Conj_B[k]['Especialidad']))
+                        worksheet.write(row, 6,Conj_B[k]['Tipo'])
+                        worksheet.write(row, 7,Conj_B[k]['Practica'])
                         row += 1
                         
     worksheet = workbook.add_worksheet('Sobrecarga')

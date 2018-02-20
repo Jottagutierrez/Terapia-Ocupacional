@@ -193,21 +193,6 @@ def F_create_param_file(act_list, prof_list, cent_list,
                     or act_list[k]['Tipo'] == 'Examen'):
                     Conj_A[j].append(k)
     
-    Conj_Sup = []
-    for k in act_keys:            
-        if act_list[k]['Tipo'] == 'Supervision':
-            Conj_Sup.append(k)
-    
-    Conj_Ex = {}
-    for k in act_keys:
-        if act_list[k]['Tipo'] == 'Examen':
-            Conj_Ex.append(k)
-    
-    Conj_Corr = {}
-    for k in act_keys:
-        if act_list[k]['Tipo'] == 'Correccion':
-            Conj_Corr.append(k)
-    
     Conj_P = {'EXTERNO': [], 'INTERNO': []}
     for p in prof_keys:
         for es in Conj_P.keys():
@@ -305,7 +290,6 @@ def F_create_param_file(act_list, prof_list, cent_list,
     data = {'prof_keys': prof_keys, 'cent_keys': cent_keys,
             'week_keys': week_keys, 'act_keys': act_keys,
             'Conj_U': Conj_U, 'Conj_A': Conj_A,
-            'Conj_Sup': Conj_Sup, 'Conj_Ex': Conj_Ex, 'Conj_Corr': Conj_Corr,
             'Conj_E': Conj_E, 'Conj_B': Conj_B,
             'Conj_P': Conj_P, 'Conj_S': Conj_S,
             'T': T, 'D': D, 'S': S, 'H': H, 'C_b': C_b, 'C_t': C_t}

@@ -25,18 +25,9 @@ Conj_U = json.load(open(st.param_path_list['Conj_U']))
     #Conjunto de actividades 'k' que se realizan en cada semana 's'...
     #U = {semana: [actividades]}
 Conj_A = json.load(open(st.param_path_list['Conj_A']))
-    #Conjunto de actividades 'k' de tipo 'supervisión' y 'examen que
-    #se realizan en el centro 'j'...
-    #A = {centro: [actividades]}
-Conj_Sup = json.load(open(st.param_path_list['Conj_Sup']))
-    #Conjunto de actividades 'k' de tipo 'supervisión'
-    #Sup = [actividades]
-Conj_Ex = json.load(open(st.param_path_list['Conj_Ex']))
-    #Conjunto de actividades 'k' de tipo 'examen'
-    #Ex = [actividades]
-Conj_Corr = json.load(open(st.param_path_list['Conj_Corr']))
-    #Conjunto de actividades 'k' de tipo 'corrección'
-    #Corr = [actividades]
+    #Conjunto de actividades 'k' de tipo 'supervisión' que se realizan en
+    #el centro 'j'...
+    #A = {centro: [actividades]
 Conj_B = json.load(open(st.param_path_list['Conj_B']))
     #Conjunto con la información de cada actividad 'k'...
 Conj_P = json.load(open(st.param_path_list['Conj_P']))
