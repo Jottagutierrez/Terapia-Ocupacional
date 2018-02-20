@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import xlsxwriter
+from datetime import date
 import settings as st
-from datetime import datetime
 
 def F_export_model_results(Conj_B, Conj_U, Conj_S, X, Y, week_keys):    
     '''
@@ -45,8 +45,8 @@ def F_export_model_results(Conj_B, Conj_U, Conj_S, X, Y, week_keys):
             for k in Conj_U[s]: #en todas las actividades de esa semana
                 for act in X[docente]:#todas las atividades realizados por el profesor
                     if k == int(act): #si la actividad realizada corresponde a las actividades realizadas esa semana
-                        worksheet.write(row, 0, datetime.fromordinal((Conj_S[s]['Fecha Inicio'])).strftime('%d-%m-%Y'))
-                        worksheet.write(row, 1, datetime.fromordinal((Conj_S[s]['Fecha Termino'])).strftime('%d-%m-%Y'))
+                        worksheet.write(row, 0, date.fromordinal((Conj_S[int(s)]['Fecha Inicio'])).strftime('%d/%m'))
+                        worksheet.write(row, 1, date.fromordinal((Conj_S[int(s)]['Fecha Termino'])).strftime('%d/%m'))
                         worksheet.write(row, 2, act)
                         worksheet.write(row, 3,Conj_B[k]['Centro'])
                         worksheet.write(row, 4,', '.join(Conj_B[k]['Especialidad']))
@@ -64,5 +64,5 @@ def F_export_model_results(Conj_B, Conj_U, Conj_S, X, Y, week_keys):
                 worksheet.write(s+1, col, 0)
             worksheet.write(s+1,0,s)
         worksheet.write(0, col, p)
-        col+=1   
+        col+=1
     workbook.close()

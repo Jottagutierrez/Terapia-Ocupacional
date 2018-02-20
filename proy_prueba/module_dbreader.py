@@ -62,7 +62,7 @@ def F_translate_into_week(sheet_list):
         num_est[p] = {}
         for k in range(3, sheet_list[p].nrows):
             num_est[p][sheet_list[p].cell(k,0).value] = {}
-            num_est[p][sheet_list[p].cell(k,0).value]['Especialidad'] = str(sheet_list[p].cell(k,1).value)
+            #num_est[p][sheet_list[p].cell(k,0).value]['Especialidad'] = str(sheet_list[p].cell(k,1).value)
             for i in range(2, sheet_list[p].ncols):
                 num_est[p][sheet_list[p].cell(k,0).value][sheet_list[p].cell(2,i).value] = int(sheet_list[p].cell(k,i).value)    
     
@@ -266,9 +266,10 @@ def F_create_param_file(act_list, prof_list, cent_list,
                                     Conj_E[p].append(k)
                                 elif act_list[k]['Practica'] == 'Practica - II':
                                     Conj_E[p].append(k)
-    Conj_S={}
-    for s in range(len(week_list)):
-        Conj_S[s] = week_list[s]
+        
+    Conj_S = week_list
+    #for s in range(len(week_list)):
+    #    Conj_S[s] = week_list[s]
     
     T = {}
     C_b = {}

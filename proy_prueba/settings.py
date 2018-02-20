@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 files_folder_path = 'proy_files'
-DB_path = files_folder_path + '/DB.xlsx'
+DB_path = files_folder_path + '/DB_2018.xlsx'
 param_folder_path = files_folder_path + '/parameters'
 result_folder_path = files_folder_path + '/results'
 param_path_list = {'prof_keys': param_folder_path + '/prof_keys.json',

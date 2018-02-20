@@ -77,8 +77,7 @@ y_var_est = {}
 for p in prof_keys:
 #for p in Conj_P['INTERNO']:
     y_var_est[p] = {}
-    #for s in week_keys:
-    for s in range(0, max(week_keys)+1):
+    for s in week_keys:
         y_var_est[p][s] = m.addVar(vtype=GRB.INTEGER, name="Y[%s,%s]"%(p,s))
 
     #Si el profesor 'p' visita/realiza una supervisión en el centro 'j'...
@@ -96,12 +95,6 @@ for p in prof_keys:
         for s in week_keys:
         #for p in Conj_P['EXTERNO']:
             z_var_est[p][j][s] = m.addVar(vtype=GRB.BINARY, name="Z[%s,%s,%s]"%(p,j,s))
-
-w_var_est = {}
-for p in prof_keys:
-    w_var_est[p] = {}
-    for s in range(0, max(week_keys)+1):
-        w_var_est[p][s] = m.addVar(vtype=GRB.CONTINUOUS, name="W[%s,%s]"%(p,s))
 ######################################################
 
 
@@ -124,11 +117,9 @@ for p in Conj_P['INTERNO']:
 
 #Restricción/Condición 2 - Sobrecarga permitida para cada profesor...
 #for p in prof_keys:
-'''
 for p in Conj_P['INTERNO']:
     for s in week_keys:
         m.addConstr(y_var_est[p][s], GRB.LESS_EQUAL, S[p], name='')
-'''
 ######################################################
 
 
@@ -195,63 +186,6 @@ for p in Conj_P['EXTERNO']:
 ######################################################
 
 
-#Restricción/Condición 7 - 
-for s in range(0, max(week_keys)):    
-    for p in Conj_P['INTERNO']:
-        v1 = LinExpr()
-        v2 = m.addVar(name='maxvar')
-        v3 = m.addVar(name='lexpvar')        
-        try:
-            for k in Conj_U[str(s)]:
-                v1.addTerms(T[str(k)], x_var_des[p][k])
-            #v2(max(0, D[p] - v1))
-            #vm = D[p] - v1
-            m.addConstr(v3, GRB.EQUAL, (D[p] - v1))
-            m.addGenConstrMax(v2, [v3, 0])
-            #m.addConstr(v2 == max_([0, (D[p] - v1)]))
-        except KeyError:
-            m.addConstr(v2, GRB.EQUAL, D[p])
-            #v2 = D[p]
-        m.addConstr(w_var_est[p][s], GRB.EQUAL, v2)
-######################################################
-
-
-#Restricción/Condición 8 - 
-for p in prof_keys:
-    for s in range(1, max(week_keys)):
-        try:            
-            m.addConstr(y_var_est[p][s], GRB.LESS_EQUAL,
-                        w_var_est[p][s-1] + w_var_est[p][s+1])
-        except KeyError:
-            pass
-    try:
-        m.addConstr(y_var_est[p][0], GRB.LESS_EQUAL, w_var_est[p][1])
-        m.addConstr(y_var_est[p][max(week_keys)], GRB.LESS_EQUAL,
-                    w_var_est[p][max(week_keys)-1])
-    except KeyError:
-        pass
-######################################################
-
-
-#Restricción/Condición 9 - 
-for p in prof_keys:
-    for s in range(1, max(week_keys)):
-        try:            
-            m.addConstr(w_var_est[p][s], GRB.GREATER_EQUAL,
-                        y_var_est[p][s-1] + y_var_est[p][s+1])
-        except KeyError:
-            pass
-    '''
-    try:
-        m.addConstr(w_var_est[p][0], GRB.GREATER_EQUAL, y_var_est[p][1])
-        m.addConstr(w_var_est[p][max(week_keys)], GRB.GREATER_EQUAL,
-                    y_var_est[p][max(week_keys)-1])
-    except KeyError:
-        pass
-    '''
-######################################################
-
-
 #Función Objetivo...    
 Obj={}
 Obj['Arg_1'] = LinExpr()
@@ -283,7 +217,7 @@ for p in prof_keys:
 Obj['Arg_1'].add(Obj['Arg_1.1'], 1)
 Obj['Arg_1'].add(Obj['Arg_1.2'], 1)
 
-Delta = 0.5
+Delta = 0.2
     #indicador de preferencia de un argumento por sobre el otro...
 
 model_Objective = LinExpr()
@@ -412,7 +346,7 @@ for p in G.keys():
         total_profcentros = total_profcentros + G[p][j]
 
 ######################################
-'''
+
 import xlsxwriter
 workbook = xlsxwriter.Workbook('Resumen_Sobrecargaa.xlsx')
 worksheet = workbook.add_worksheet()
@@ -429,7 +363,7 @@ for p in prof_keys:
     col+=1    
 workbook.close()
 
-
+'''
 for p in z_var_est.keys():
     for j in z_var_est[p].keys():
         for s in z_var_est[p][j].keys():
@@ -448,15 +382,13 @@ for k in x_var_des['SUMIDERO']:
         print(str(k) + ': ' + str(x_var_des['SUMIDERO'][k].x) + ' '
               + Conj_B[k]['Tipo'])
 '''
-print('Año: 2018')
-print('Delta: ' + str(Delta))
 print('Actividades asignadas: ' + str(total_asignaciones))
 print('Hrs sobrecarga: ' + str(total_sobrecarga))
 print('Centros: ' + str(total_profcentros))
 print('Tiempo total demandado: ' + str(result_tiempo))
 print('Costo: $' + str(Obj['Arg_1'].getValue()))
 
-mexp.F_export_model_results(Conj_B, Conj_U, Conj_S, X, Y, week_keys)
+mexp.F_export_model_results(Conj_B, Conj_U, X)
 
 #######################
 
