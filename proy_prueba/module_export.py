@@ -46,7 +46,7 @@ def F_export_model_results(Conj_B, Conj_U, Conj_S, X, Y, week_keys):
             for k in Conj_U[s]: #en todas las actividades de esa semana
                 for act in X[docente]:#todas las atividades realizados por el profesor
                     if k == int(act): #si la actividad realizada corresponde a las actividades realizadas esa semana
-                        worksheet.write(row, 0, s)
+                        worksheet.write(row, 0, int(s))
                         worksheet.write(row, 1, date.fromordinal((Conj_S[int(s)]['Fecha Inicio'])).strftime('%d/%m'))
                         worksheet.write(row, 2, date.fromordinal((Conj_S[int(s)]['Fecha Termino'])).strftime('%d/%m'))
                         worksheet.write(row, 3, act)

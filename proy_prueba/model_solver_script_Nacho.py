@@ -25,9 +25,18 @@ Conj_U = json.load(open(st.param_path_list['Conj_U']))
     #Conjunto de actividades 'k' que se realizan en cada semana 's'...
     #U = {semana: [actividades]}
 Conj_A = json.load(open(st.param_path_list['Conj_A']))
-    #Conjunto de actividades 'k' de tipo 'supervisión' que se realizan en
-    #el centro 'j'...
-    #A = {centro: [actividades]
+    #Conjunto de actividades 'k' de tipo 'supervisión' y 'examen que
+    #se realizan en el centro 'j'...
+    #A = {centro: [actividades]}
+Conj_Sup = json.load(open(st.param_path_list['Conj_Sup']))
+    #Conjunto de actividades 'k' de tipo 'supervisión'
+    #Sup = [actividades]
+Conj_Ex = json.load(open(st.param_path_list['Conj_Ex']))
+    #Conjunto de actividades 'k' de tipo 'examen'
+    #Ex = [actividades]
+Conj_Corr = json.load(open(st.param_path_list['Conj_Corr']))
+    #Conjunto de actividades 'k' de tipo 'corrección'
+    #Corr = [actividades]
 Conj_B = json.load(open(st.param_path_list['Conj_B']))
     #Conjunto con la información de cada actividad 'k'...
 Conj_P = json.load(open(st.param_path_list['Conj_P']))
@@ -49,6 +58,7 @@ week_keys = json.load(open(st.param_path_list['week_keys']))
 act_keys = json.load(open(st.param_path_list['act_keys']))
     #listado de todas las actividades...
 ######################################################
+
 
 #Iniciar el modelo...
 m = Model('modelo')
@@ -78,7 +88,10 @@ for p in prof_keys:
     y_var_est[p] = {}
     #for s in week_keys:
     for s in range(0, max(week_keys)+1):
-        y_var_est[p][s] = m.addVar(vtype=GRB.INTEGER, name="Y[%s,%s]"%(p,s))
+        y_var_est[p][s] = {'Sup': m.addVar(vtype=GRB.INTEGER, name="Y[%s,%s,%s]"%(p,s,'sup')),
+                 'Ex': m.addVar(vtype=GRB.INTEGER, name="Y[%s,%s,%s]"%(p,s,'ex')),
+                 'Corr': m.addVar(vtype=GRB.INTEGER, name="Y[%s,%s,%s]"%(p,s,'corr'))}
+        #y_var_est[p][s] = m.addVar(vtype=GRB.INTEGER, name="Y[%s,%s]"%(p,s))
 
     #Si el profesor 'p' visita/realiza una supervisión en el centro 'j'...
 g_var_est = {}
@@ -109,15 +122,40 @@ for p in prof_keys:
 for p in Conj_P['INTERNO']:
     if D[p] != 'N/A':
         for s in week_keys:
-            cond_1 = LinExpr()
-            for k in Conj_U[str(s)]:            
-                try:
-                    cond_1.addTerms(T[str(k)], x_var_des[p][k])
-                except KeyError:
-                #para el caso en que se busque en la llave 'k'
-                #dentro de la variable X y esta no exista...
-                    pass
-            m.addConstr(cond_1, GRB.LESS_EQUAL, D[p] + y_var_est[p][s], name='')
+            cond_1_sup = LinExpr()
+            cond_1_ex = LinExpr()
+            cond_1_corr = LinExpr()
+            for k in Conj_U[str(s)]:
+                if k in Conj_Sup:
+                    try:
+                        cond_1_sup.addTerms(T[str(k)], x_var_des[p][k])
+                    except KeyError:
+                    #para el caso en que se busque en la llave 'k'
+                    #dentro de la variable X y esta no exista...
+                        pass
+                elif k in Conj_Ex:
+                    try:
+                        cond_1_ex.addTerms(T[str(k)], x_var_des[p][k])
+                    except KeyError:
+                    #para el caso en que se busque en la llave 'k'
+                    #dentro de la variable X y esta no exista...
+                        pass
+                elif k in Conj_Corr:
+                    try:
+                        cond_1_corr.addTerms(T[str(k)], x_var_des[p][k])
+                    except KeyError:
+                    #para el caso en que se busque en la llave 'k'
+                    #dentro de la variable X y esta no exista...
+                        pass
+
+            m.addConstr(cond_1_sup, GRB.LESS_EQUAL, D[p] -(cond_1_ex +
+                        cond_1_corr) + y_var_est[p][s]['Sup'], name='')
+            #
+            m.addConstr(cond_1_ex, GRB.LESS_EQUAL, D[p] -(cond_1_sup +
+                        cond_1_corr) + y_var_est[p][s]['Ex'], name='')
+            #
+            m.addConstr(cond_1_corr, GRB.LESS_EQUAL, D[p] -(cond_1_ex +
+                        cond_1_sup) + y_var_est[p][s]['Corr'], name='')
 ######################################################
 
 
@@ -169,7 +207,6 @@ for k in act_keys:
 ######################################################
 
 
-
 #Restricción/Condición 6 - Verificación si el profesor 'p' realiza supervisiones
 #o examenes en el centro 'j', en la semana 's'...
 for p in Conj_P['EXTERNO']:
@@ -216,28 +253,38 @@ for s in range(0, max(week_keys)):
 
 
 #Restricción/Condición 8 - 
-for p in prof_keys:
-    for s in range(1, max(week_keys)):
+for p in Conj_P['INTERNO']:
+    for s in range(1, max(week_keys)):        
         try:            
-            m.addConstr(y_var_est[p][s], GRB.LESS_EQUAL,
+            m.addConstr(y_var_est[p][s]['Sup'] + y_var_est[p][s]['Corr']
+            + y_var_est[p][s]['Ex'],
+                        GRB.LESS_EQUAL,
                         w_var_est[p][s-1] + w_var_est[p][s+1])
+            #
+            #m.addConstr(y_var_est[p][s]['Ex'], GRB.EQUAL, 0)
         except KeyError:
             pass
     try:
-        m.addConstr(y_var_est[p][0], GRB.LESS_EQUAL, w_var_est[p][1])
-        m.addConstr(y_var_est[p][max(week_keys)], GRB.LESS_EQUAL,
-                    w_var_est[p][max(week_keys)-1])
+        m.addConstr(y_var_est[p][0]['Sup'] + y_var_est[p][0]['Corr']
+        + y_var_est[p][s]['Ex'],
+                    GRB.LESS_EQUAL, w_var_est[p][1])
+        m.addConstr(y_var_est[p][max(week_keys)]['Sup'] +
+                    y_var_est[p][max(week_keys)]['Corr']
+                    + y_var_est[p][s]['Ex'],
+                    GRB.LESS_EQUAL, w_var_est[p][max(week_keys)-1])
     except KeyError:
         pass
 ######################################################
 
 
 #Restricción/Condición 9 - 
-for p in prof_keys:
+for p in Conj_P['INTERNO']:
     for s in range(1, max(week_keys)):
         try:            
             m.addConstr(w_var_est[p][s], GRB.GREATER_EQUAL,
-                        y_var_est[p][s-1] + y_var_est[p][s+1])
+                        y_var_est[p][s-1]['Sup'] + y_var_est[p][s-1]['Corr'] +
+                        y_var_est[p][s+1]['Sup'] + y_var_est[p][s+1]['Corr']
+                        + y_var_est[p][s-1]['Ex'] + y_var_est[p][s+1]['Ex'])
         except KeyError:
             pass
     '''
@@ -277,12 +324,13 @@ for p in prof_keys:
                 except KeyError:
                     pass    
         if p in Conj_P['INTERNO']:
-            Obj['Arg_2'].addTerms(H[p], y_var_est[p][s])
+            for t in y_var_est[p][s].keys():
+                Obj['Arg_2'].addTerms(H[p], y_var_est[p][s][t])
 
 Obj['Arg_1'].add(Obj['Arg_1.1'], 1)
 Obj['Arg_1'].add(Obj['Arg_1.2'], 1)
 
-Delta = 0.9
+Delta = 0.5
     #indicador de preferencia de un argumento por sobre el otro...
 
 model_Objective = LinExpr()
@@ -330,9 +378,9 @@ for p in prof_keys:
             #result_y[v.varName] = v.x
             #result_y[v.varName] = y_var_est[p][s].x
             #horas_sobrecarga = horas_sobrecarga + y_var_est[p][s].x
-            v = y_var_est[p][s]
-            if v.x > 0:
-               result_y[p][s] = v.x
+            v = y_var_est[p][s]['Sup'].x + y_var_est[p][s]['Corr'].x + y_var_est[p][s]['Ex'].x
+            if v > 0:
+                result_y[p][s] = v
         except:
             pass
     #result_y[p] = horas_sobrecarga

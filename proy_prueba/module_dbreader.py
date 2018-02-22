@@ -198,12 +198,12 @@ def F_create_param_file(act_list, prof_list, cent_list,
         if act_list[k]['Tipo'] == 'Supervision':
             Conj_Sup.append(k)
     
-    Conj_Ex = {}
+    Conj_Ex = []
     for k in act_keys:
         if act_list[k]['Tipo'] == 'Examen':
             Conj_Ex.append(k)
     
-    Conj_Corr = {}
+    Conj_Corr = []
     for k in act_keys:
         if act_list[k]['Tipo'] == 'Correccion':
             Conj_Corr.append(k)
