@@ -36,9 +36,9 @@ def F_export_model_results(Conj_B, Conj_U, Conj_S, X, Y, week_keys):
         worksheet.write(0, 1, 'Fecha Inicio')
         worksheet.write(0, 2, 'Fecha Termino')
         worksheet.write(0, 3, 'Actividad')
-        worksheet.write(0, 4, 'Centro')
+        worksheet.write(0, 4, 'Tipo')
         worksheet.write(0, 5, 'Especialidad')
-        worksheet.write(0, 6, 'Tipo')
+        worksheet.write(0, 6, 'Centro')
         worksheet.write(0, 7, 'Practica')
         
         row=1
@@ -50,13 +50,14 @@ def F_export_model_results(Conj_B, Conj_U, Conj_S, X, Y, week_keys):
                         worksheet.write(row, 1, date.fromordinal((Conj_S[int(s)]['Fecha Inicio'])).strftime('%d/%m'))
                         worksheet.write(row, 2, date.fromordinal((Conj_S[int(s)]['Fecha Termino'])).strftime('%d/%m'))
                         worksheet.write(row, 3, act)
-                        worksheet.write(row, 4,Conj_B[k]['Centro'])
+                        worksheet.write(row, 4,Conj_B[k]['Tipo'])
                         worksheet.write(row, 5,', '.join(Conj_B[k]['Especialidad']))
-                        worksheet.write(row, 6,Conj_B[k]['Tipo'])
+                        worksheet.write(row, 6,Conj_B[k]['Centro'])
                         worksheet.write(row, 7,Conj_B[k]['Practica'])
                         row += 1
                         
     worksheet = workbook.add_worksheet('Sobrecarga')
+    worksheet.write(0, 0, 'Semana')
     col=1
     for p in X.keys():
         for s in range(max(week_keys)+1):

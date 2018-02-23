@@ -35,8 +35,10 @@ dbr.F_create_param_file(DATA_matrix_Act, DATA_matrix_Prof, DATA_matrix_Cent,
                         st.param_path_list)
 ######################################################
 
-'''
 Conj_E = json.load(open(st.param_path_list['Conj_E']))
+'''
+
+Conj_U = json.load(open(st.param_path_list['Conj_U']))
 
 Act_type = {'Supervision': 0, 'Correccion': 0, 'Examen': 0}
 

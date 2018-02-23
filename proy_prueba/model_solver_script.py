@@ -82,7 +82,8 @@ act_keys = json.load(open(st.param_path_list['act_keys']))
                 .46, .461, .462, .463, .464, .465, .466, .467, .468, .469,
                 .5, .6, .7, .8, .9]
 '''
-deltaOptions = np.arange(0.02,1,0.02)
+#deltaOptions = np.arange(0.02,1,0.02)
+deltaOptions = [.9]
 
 # storage variables
 list_sobrecarga = {}
@@ -181,6 +182,7 @@ for deltaValue in deltaOptions:
                 #cond_1_Fijo.add(cond_1_corr, 1)
                 cond_1_Movil.add(cond_1_corr, 1)
                 cond_1_Fijo.add(cond_1_ex, 1)
+                #cond_1_Movil.add(cond_1_ex, 1)
                 cond_1_Movil.add(cond_1_sup, 1)                
                 m.addConstr(cond_1_Fijo, gp.GRB.LESS_EQUAL, D[p], name='')
                 m.addConstr(cond_1_Movil, gp.GRB.LESS_EQUAL, D[p] - cond_1_Fijo
@@ -236,6 +238,19 @@ for deltaValue in deltaOptions:
     ######################################################
     
     
+    #Restricción/Condición 5.5 - Todas las actividades deben realizarse...
+    cond_5_5 = gp.LinExpr()
+    for k in act_keys:        
+        for p in prof_keys:
+            try:
+                cond_5_5.addTerms(1.0, x_var_des[p][k])
+            except KeyError:
+            #para el caso en que se busque en la llave 'k'
+            #dentro de la variable X y esta no exista...
+                pass
+    m.addConstr(cond_5_5, gp.GRB.EQUAL, len(act_keys), name='')
+    ######################################################
+    
     
     #Restricción/Condición 6 - Verificación si el profesor 'p' realiza supervisiones
     #o examenes en el centro 'j', en la semana 's'...
@@ -261,27 +276,40 @@ for deltaValue in deltaOptions:
     ######################################################
     
     
-    #Restricción/Condición 7 - 
-    for s in range(0, max(week_keys)):    
+    #Restricción/Condición 7 -
+    Contar_Res7 = {}
+    for s in range(0, max(week_keys)+1):  
+        Contar_Res7[str(s)] = {}
         for p in Conj_P['INTERNO']:
+            Contar_Res7[str(s)][p] = 0
             v1 = gp.LinExpr()
-            v2 = m.addVar(name='maxvar')
-            v3 = m.addVar(name='lexpvar')        
-            try:
+            v2 = m.addVar(name='maxvar', vtype = gp.GRB.CONTINUOUS)
+            v3 = m.addVar(name='lexpvar', vtype = gp.GRB.CONTINUOUS,
+                          lb = -gp.GRB.INFINITY)
+            if str(s) in Conj_U.keys():
                 for k in Conj_U[str(s)]:
-                    v1.addTerms(T[str(k)], x_var_des[p][k])
-                #v2(max(0, D[p] - v1))
-                #vm = D[p] - v1
-                m.addConstr(v3, gp.GRB.EQUAL, (D[p] - v1))
-                m.addGenConstrMax(v2, [v3, 0])
-                #m.addConstr(v2 == max_([0, (D[p] - v1)]))
-            except KeyError:
-                m.addConstr(v2, gp.GRB.EQUAL, D[p])
-                #v2 = D[p]
+                    if k in Conj_E[p]:
+                        v1.addTerms(T[str(k)], x_var_des[p][k])
+            else:
+                #para cuando se intente acceder a Conj_U[s] y esa semana
+                #no exista...
+                v1.addConstant(0)
+            m.addConstr(v3, gp.GRB.EQUAL, (D[p] - v1))
+            m.addGenConstrMax(v2, [v3, 0])
             m.addConstr(w_var_est[p][s], gp.GRB.EQUAL, v2)
-    ######################################################
-    
-    
+            Contar_Res7[str(s)][p] = v3
+            #v1 = None
+            #v2 = None
+            #v3 = None
+    ######################################################    
+    '''
+    for s in Contar_Res7.keys():
+        for p in Contar_Res7[s].keys():
+            print('Semana: ' + s + '\n' + 'Profesor: ' + p)
+            print(str(Contar_Res7[s][p]) + '\n')
+    '''
+
+
     #Restricción/Condición 8 - 
     for p in prof_keys:
         for s in range(1, max(week_keys)):
@@ -307,15 +335,13 @@ for deltaValue in deltaOptions:
                             y_var_est[p][s-1] + y_var_est[p][s+1])
             except KeyError:
                 pass
-        '''
-        try:
-            m.addConstr(w_var_est[p][0], gp.GRB.GREATER_EQUAL, y_var_est[p][1])
-            m.addConstr(w_var_est[p][max(week_keys)], gp.GRB.GREATER_EQUAL,
-                        y_var_est[p][max(week_keys)-1])
-        except KeyError:
-            pass
-        '''
     ######################################################
+
+    
+    #Restricción/Condición 10 - Profesor que no puede hacer actividades de CUA
+    for k in range(len(Conj_B)):
+        if Conj_B[k]['Centro']== 'CUA':
+            m.addConstr(x_var_des['JLL'][k] == 0)## x[p][k]
     
     
     #Función Objetivo...    
@@ -431,6 +457,27 @@ for deltaValue in deltaOptions:
         result_z[p] = dict( [(k,v) for k,v in result_z[p].items() if len(v)>0])
     result_z = dict( [(k) for k in result_z.items() if len(k)>0])
     
+    result_w = {}    
+    for p in prof_keys:    
+        #horas_sobrecarga = 0
+        result_w[p] = {}
+        for s in range(0, max(week_keys)+1):
+        #for s in week_keys:
+            #result_y[v.varName] = y_var_est[p][s].x
+            try:
+                #var_name = "Y[%s,%s]"%(p,s)
+                #v = m.getVarByName(var_name)            
+                #result_y[v.varName] = v.x
+                #result_y[v.varName] = y_var_est[p][s].x
+                #horas_sobrecarga = horas_sobrecarga + y_var_est[p][s].x
+                v = w_var_est[p][s]
+                if v.x >= 0:
+                   result_w[p][s] = v.x
+            except:
+                pass
+        #result_y[p] = horas_sobrecarga
+    #result_w = dict( [(k,v) for k,v in result_w.items() if len(v)>0])
+    
     with open((st.result_folder_path + '/model_result_X.txt'), 'w') as outfile:
         json.dump(result_x, outfile)
     with open((st.result_folder_path + '/model_result_Y.txt'), 'w') as outfile:
@@ -461,7 +508,7 @@ for deltaValue in deltaOptions:
             total_profcentros = total_profcentros + G[p][j]
     
     ######################################
-    '''
+    
     print('Año: 2018')
     print('Delta: ' + str(Delta))
     print('Actividades asignadas: ' + str(total_asignaciones))
@@ -469,7 +516,7 @@ for deltaValue in deltaOptions:
     print('Centros: ' + str(total_profcentros))
     print('Tiempo total demandado: ' + str(result_tiempo))
     print('Costo: $' + str(Obj['Arg_1'].getValue()))
-    '''
+    
     mexp.F_export_model_results(Conj_B, Conj_U, Conj_S, X, Y, week_keys)
     
     list_sobrecarga[deltaValue] = total_sobrecarga

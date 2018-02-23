@@ -100,6 +100,10 @@ def F_translate_into_week(sheet_list):
                         pass
             current_rot+=1 
             i+=rot_info[p]
+    #act_list = dict( [(k,v) for k,v in act_list.items() if len(v)>0])
+    
+    for elem in act_list:
+        elem['Especialidad'] = list(filter(None, elem['Especialidad']))
     
     R = Result(week_list, pract_list, act_list, cent_list)                
     return R;
@@ -220,47 +224,65 @@ def F_create_param_file(act_list, prof_list, cent_list,
     for p in prof_keys:        
         Conj_E[p] = []
         for s in Conj_U.keys():
+            contador_act = {'Supervision': 0, 'Correccion': 0, 'Examen': 0}
             for k in Conj_U[s]:
                 if prof_list[p]['Especialidad'] == 'TODO':
                     if act_list[k]['Tipo'] == 'Correccion':
                         if prof_list[p]['Max Correccion'] != 'N/A':
-                            for q in range(int(prof_list[p]['Max Correccion'])):    
+                            if contador_act['Correccion'] < prof_list[p]['Max Correccion']:
                                 Conj_E[p].append(k)
+                                contador_act['Correccion']+=1
                         elif prof_list[p]['Max Correccion'] == 'N/A':
                             Conj_E[p].append(k)
                     elif act_list[k]['Tipo'] == 'Supervision':
                         if prof_list[p]['Max Supervision'] != 'N/A':
-                            for q in range(int(prof_list[p]['Max Supervision'])):
+                            if contador_act['Supervision'] < prof_list[p]['Max Supervision']:
                                 Conj_E[p].append(k)
+                                contador_act['Supervision']+=1
                         elif prof_list[p]['Max Supervision'] == 'N/A':
                             Conj_E[p].append(k)
                     elif act_list[k]['Tipo'] == 'Examen':
                         if prof_list[p]['Max Examen'] != 'N/A':
-                            for q in range(int(prof_list[p]['Max Examen'])):
+                            if contador_act['Examen'] < prof_list[p]['Max Examen']:
                                 Conj_E[p].append(k)
+                                contador_act['Examen']+=1
                         elif prof_list[p]['Max Examen'] == 'N/A':
                             Conj_E[p].append(k)
                 elif prof_list[p]['Especialidad'] != 'TODO':
                     for es in act_list[k]['Especialidad']:
-                        if act_list[k]['Tipo'] == 'Correccion':
-                            if prof_list[p]['Max Correccion'] != 'N/A':
-                                for q in range(int(prof_list[p]['Max Correccion'])):
+                        if es != 'COMUNITARIO':
+                            if act_list[k]['Tipo'] == 'Correccion':
+                                if prof_list[p]['Max Correccion'] != 'N/A':
+                                    if contador_act['Correccion'] < prof_list[p]['Max Correccion']:
+                                        if es == prof_list[p]['Especialidad']:
+                                            Conj_E[p].append(k)
+                                            contador_act['Correccion']+=1
+                                elif prof_list[p]['Max Correccion'] == 'N/A':
+                                    if es == prof_list[p]['Especialidad']:
+                                        Conj_E[p].append(k)        
+                            elif act_list[k]['Tipo'] == 'Examen':
+                                if prof_list[p]['Max Examen'] != 'N/A':
+                                    if contador_act['Examen'] < prof_list[p]['Max Examen']:
+                                        if es == prof_list[p]['Especialidad']:
+                                            Conj_E[p].append(k)
+                                            contador_act['Examen']+=1
+                                elif prof_list[p]['Max Examen'] == 'N/A':
                                     if es == prof_list[p]['Especialidad']:
                                         Conj_E[p].append(k)
-                            elif prof_list[p]['Max Correccion'] == 'N/A':
-                                if es == prof_list[p]['Especialidad']:
-                                    Conj_E[p].append(k)        
-                        elif act_list[k]['Tipo'] == 'Examen':
-                            if prof_list[p]['Max Examen'] != 'N/A':
-                                for q in range(int(prof_list[p]['Max Examen'])):
-                                    if es == prof_list[p]['Especialidad']:
-                                        Conj_E[p].append(k)
-                            elif prof_list[p]['Max Examen'] == 'N/A':
-                                if es == prof_list[p]['Especialidad']:
-                                    Conj_E[p].append(k)
-                        elif act_list[k]['Tipo'] == 'Supervision':
-                            if prof_list[p]['Max Supervision'] != 'N/A':
-                                for q in range(int(prof_list[p]['Max Supervision'])):                            
+                            elif act_list[k]['Tipo'] == 'Supervision':
+                                if prof_list[p]['Max Supervision'] != 'N/A':
+                                    if contador_act['Supervision'] < prof_list[p]['Max Supervision']:
+                                        if act_list[k]['Practica'] == 'Mencion':
+                                            if es == prof_list[p]['Especialidad']:
+                                                Conj_E[p].append(k)  
+                                        elif act_list[k]['Practica'] == 'Internado':
+                                            Conj_E[p].append(k)
+                                        elif act_list[k]['Practica'] == 'Practica - I':
+                                            Conj_E[p].append(k)
+                                        elif act_list[k]['Practica'] == 'Practica - II':
+                                            Conj_E[p].append(k)
+                                        contador_act['Supervision']+=1
+                                elif prof_list[p]['Max Supervision'] == 'N/A':
                                     if act_list[k]['Practica'] == 'Mencion':
                                         if es == prof_list[p]['Especialidad']:
                                             Conj_E[p].append(k)                    
@@ -270,17 +292,6 @@ def F_create_param_file(act_list, prof_list, cent_list,
                                         Conj_E[p].append(k)
                                     elif act_list[k]['Practica'] == 'Practica - II':
                                         Conj_E[p].append(k)
-                            elif prof_list[p]['Max Supervision'] == 'N/A':
-                                if act_list[k]['Practica'] == 'Mencion':
-                                    for es in act_list[k]['Especialidad']:
-                                        if es == prof_list[p]['Especialidad']:
-                                            Conj_E[p].append(k)                    
-                                elif act_list[k]['Practica'] == 'Internado':
-                                    Conj_E[p].append(k)
-                                elif act_list[k]['Practica'] == 'Practica - I':
-                                    Conj_E[p].append(k)
-                                elif act_list[k]['Practica'] == 'Practica - II':
-                                    Conj_E[p].append(k)
         
     Conj_S = week_list
     #for s in range(len(week_list)):
