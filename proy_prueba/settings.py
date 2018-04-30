@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 files_folder_path = 'proy_files'
-DB_path = files_folder_path + '/DB_2017.xlsx'
+DB_path = files_folder_path + '/DB_2018.xlsx'
 param_folder_path = files_folder_path + '/parameters'
 result_folder_path = files_folder_path + '/results'
 param_path_list = {'prof_keys': param_folder_path + '/prof_keys.json',
@@ -16,6 +16,7 @@ param_path_list = {'prof_keys': param_folder_path + '/prof_keys.json',
                    'Conj_B': param_folder_path + '/Conj_B.json',
                    'Conj_P': param_folder_path + '/Conj_P.json',
                    'Conj_S': param_folder_path + '/Conj_S.json',
+                   'Conj_Lin': param_folder_path + '/Conj_Lin.json',
                    'T': param_folder_path + '/T.json',
                    'D': param_folder_path + '/D.json',
                    'S': param_folder_path + '/S.json',

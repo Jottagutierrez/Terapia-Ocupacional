@@ -18,6 +18,9 @@ DATA_matrix_Weeks = dbr.F_translate_into_week(xl_sheet).week_L
 DATA_matrix_Pract = dbr.F_translate_into_week(xl_sheet).pract_L
 DATA_matrix_Act = dbr.F_translate_into_week(xl_sheet).act_L
 DATA_matrix_Cent = dbr.F_translate_into_week(xl_sheet).cent_L
+DATA_list_Lin = dbr.F_translate_into_week(xl_sheet).lin_L
+
+print()
 ######################################################
 
 
@@ -31,14 +34,17 @@ DATA_matrix_Prof = dbr.F_get_prof_data(xl_sheet['Profesores'])
 
 #Escribir los parámetros en un archivo JSON...
 dbr.F_create_param_file(DATA_matrix_Act, DATA_matrix_Prof, DATA_matrix_Cent,
-                        DATA_matrix_Weeks, DATA_matrix_Pract,
+                        DATA_matrix_Weeks, DATA_matrix_Pract, DATA_list_Lin,
                         st.param_path_list)
 ######################################################
 
 Conj_E = json.load(open(st.param_path_list['Conj_E']))
+Conj_Lin = json.load(open(st.param_path_list['Conj_Lin']))
+print(Conj_Lin['174']['Practica'])
+print(DATA_matrix_Act[983]['Tipo'])
 '''
 
-Conj_U = json.load(open(st.param_path_list['Conj_U']))
+Conj_B = json.load(open(st.param_path_list['Conj_B']))
 
 Act_type = {'Supervision': 0, 'Correccion': 0, 'Examen': 0}
 

@@ -20,7 +20,7 @@ def F_get_xl_sheets(path):
 #Semanas, Centros} y dejarlas almacenadas en variables en Python. También
 #construye la matriz de actividades...
 def F_translate_into_week(sheet_list):
-    Result = collections.namedtuple('Result',['week_L','pract_L', 'act_L', 'cent_L'])
+    Result = collections.namedtuple('Result',['week_L','pract_L', 'act_L', 'cent_L', 'lin_L'])
     
     #Crear una matriz con la información de las semanas...
     sheet_semanas = sheet_list['Info_Semanas']
@@ -73,7 +73,10 @@ def F_translate_into_week(sheet_list):
         act_info[sheet_act.cell(i,0).value] = {}
         for j in range(1, sheet_act.ncols):
             act_info[sheet_act.cell(i,0).value][sheet_act.cell(0,j).value] = sheet_act.cell(i,j).value
+    
     act_list = []
+    Lin = 0
+    lin_list = {}
     for p in rot_info.keys():
         current_rot = 1
         i = pract_list[p]['Semana Inicio']
@@ -88,24 +91,27 @@ def F_translate_into_week(sheet_list):
                         
             for k in num_est[p].keys():
                 for j in range(0, num_est[p][k][current_rot]):
-                    act_list.append({'Practica': p,'Tipo': 'Supervision', 'Centro': k, 'Semana': sem_sup[p], 'Tiempo': act_info['Supervision']['Tiempo'], 'Costo Base': act_info['Supervision']['Costo Base'], 'Costo Traslado': act_info['Supervision']['Costo Traslado'], 'Especialidad': cent_list[k], 'Rotativa': current_rot})
+                    act_list.append({'Practica': p,'Tipo': 'Supervision', 'Centro': k, 'Semana': sem_sup[p], 'Tiempo': act_info['Supervision']['Tiempo'], 'Costo Base': act_info['Supervision']['Costo Base'], 'Costo Traslado': act_info['Supervision']['Costo Traslado'], 'Especialidad': cent_list[k], 'Rotativa': current_rot, 'Linea': Lin})
                     try:
                         for c in sem_corr[p]:
-                            act_list.append({'Practica': p,'Tipo': 'Correccion', 'Centro': k, 'Semana': c, 'Tiempo': act_info['Correccion']['Tiempo'], 'Costo Base': act_info['Correccion']['Costo Base'], 'Costo Traslado': act_info['Correccion']['Costo Traslado'], 'Especialidad': cent_list[k], 'Rotativa': current_rot})
+                            act_list.append({'Practica': p,'Tipo': 'Correccion', 'Centro': k, 'Semana': c, 'Tiempo': act_info['Correccion']['Tiempo'], 'Costo Base': act_info['Correccion']['Costo Base'], 'Costo Traslado': act_info['Correccion']['Costo Traslado'], 'Especialidad': cent_list[k], 'Rotativa': current_rot, 'Linea': Lin})
                     except TypeError:
-                        act_list.append({'Practica': p,'Tipo': 'Correccion', 'Centro': k, 'Semana': sem_corr[p], 'Tiempo': act_info['Correccion']['Tiempo'], 'Costo Base': act_info['Correccion']['Costo Base'], 'Costo Traslado': act_info['Correccion']['Costo Traslado'], 'Especialidad': cent_list[k], 'Rotativa': current_rot})
+                        act_list.append({'Practica': p,'Tipo': 'Correccion', 'Centro': k, 'Semana': sem_corr[p], 'Tiempo': act_info['Correccion']['Tiempo'], 'Costo Base': act_info['Correccion']['Costo Base'], 'Costo Traslado': act_info['Correccion']['Costo Traslado'], 'Especialidad': cent_list[k], 'Rotativa': current_rot, 'Linea': Lin})
                     try:
-                        act_list.append({'Practica': p,'Tipo': 'Examen', 'Centro': k, 'Semana': sem_exam[p], 'Tiempo': act_info['Examen']['Tiempo'], 'Costo Base': act_info['Examen']['Costo Base'], 'Costo Traslado': act_info['Examen']['Costo Traslado'], 'Especialidad': cent_list[k], 'Rotativa': current_rot})
+                        act_list.append({'Practica': p,'Tipo': 'Examen', 'Centro': k, 'Semana': sem_exam[p], 'Tiempo': act_info['Examen']['Tiempo'], 'Costo Base': act_info['Examen']['Costo Base'], 'Costo Traslado': act_info['Examen']['Costo Traslado'], 'Especialidad': cent_list[k], 'Rotativa': current_rot, 'Linea': Lin})
                     except KeyError:
                         pass
-            current_rot+=1 
+                    lin_list[Lin] = p
+                    Lin+=1
+            current_rot+=1
             i+=rot_info[p]
     #act_list = dict( [(k,v) for k,v in act_list.items() if len(v)>0])
+    #lin_list = list(set(lin_list))
     
     for elem in act_list:
         elem['Especialidad'] = list(filter(None, elem['Especialidad']))
     
-    R = Result(week_list, pract_list, act_list, cent_list)                
+    R = Result(week_list, pract_list, act_list, cent_list, lin_list)
     return R;
 ######################################################
 
@@ -158,7 +164,7 @@ def F_ematch_prof_act(mat_prof, mat_act):
 #Función para crear el archivo donde se almacenarán los parámetros
 #ya procesados...
 def F_create_param_file(act_list, prof_list, cent_list,
-                        week_list, pract_list, path):
+                        week_list, pract_list, lin_list, path):
         
     prof_keys = []
     for k in prof_list.keys():
@@ -219,6 +225,28 @@ def F_create_param_file(act_list, prof_list, cent_list,
                 Conj_P[es].append(p)
     
     Conj_B = act_list
+    
+    Conj_Lin = {}
+    for l in lin_list.keys():
+        if lin_list[l] == 'Practica - I':
+            Conj_Lin[l] = {'Supervision': 0, 'Correccion': 0, 'Practica': 'Practica - I'}
+        elif lin_list[l] == 'Internado':
+            Conj_Lin[l] = {'Supervision': 0, 'Correccion': [], 'Examen': 0, 'Practica': 'Internado'}
+        for k in act_keys:
+            if act_list[k]['Practica'] == 'Internado':
+                if act_list[k]['Linea'] == l:
+                    if act_list[k]['Tipo'] == 'Supervision':
+                        Conj_Lin[l]['Supervision'] = k
+                    elif act_list[k]['Tipo'] == 'Examen':
+                        Conj_Lin[l]['Examen'] = k
+                    elif act_list[k]['Tipo'] == 'Correccion':
+                        Conj_Lin[l]['Correccion'].append(k)
+            elif act_list[k]['Practica'] == 'Practica - I':
+                if act_list[k]['Linea'] == l:
+                    if act_list[k]['Tipo'] == 'Supervision':
+                            Conj_Lin[l]['Supervision'] = k
+                    elif act_list[k]['Tipo'] == 'Correccion':
+                        Conj_Lin[l]['Correccion'] = k
     
     Conj_E = {}
     for p in prof_keys:        
@@ -310,15 +338,15 @@ def F_create_param_file(act_list, prof_list, cent_list,
     H = {}
     for p in prof_keys:
         D[p] = prof_list[p]['Disponibilidad']
-        S[p] = prof_list[p]['Max Sobrecarga']
-        H[p] = prof_list[p]['Costo Sobrecarga']        
+        S[p] = 1
+        H[p] = 1
         
     data = {'prof_keys': prof_keys, 'cent_keys': cent_keys,
             'week_keys': week_keys, 'act_keys': act_keys,
             'Conj_U': Conj_U, 'Conj_A': Conj_A,
             'Conj_Sup': Conj_Sup, 'Conj_Ex': Conj_Ex, 'Conj_Corr': Conj_Corr,
             'Conj_E': Conj_E, 'Conj_B': Conj_B,
-            'Conj_P': Conj_P, 'Conj_S': Conj_S,
+            'Conj_P': Conj_P, 'Conj_S': Conj_S, 'Conj_Lin': Conj_Lin,
             'T': T, 'D': D, 'S': S, 'H': H, 'C_b': C_b, 'C_t': C_t}
     
     for pth in path.keys():
