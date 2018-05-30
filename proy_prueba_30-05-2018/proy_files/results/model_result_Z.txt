@@ -1,0 +1,1 @@
+{"AE": {}, "CB": {}, "CP": {}, "CV": {}, "JC": {}, "JLL": {}, "JT": {}, "MER": {}, "MFE": {}, "MJA": {}, "NN": {}, "XU": {}, "Externalizaciones": {"Clinica Las Condes": {"13": 1.0, "27": 1.0}, "Clinica Los Coihues": {"20": 1.0, "27": 1.0}, "Horwitz": {"27": 1.0}, "Hosmil - Salud Fisica": {"6": 1.0}}}
