@@ -39,9 +39,9 @@ def F_cent_student_row(X, Conj_B, tb, prof, cent_asigned):
     return cent_row
 
 def F_export_model_results(G, Conj_B, Conj_U, Conj_S, Conj_Lin, X, Y, W,
-                           week_keys, cent_keys, cent_info, fileName):    
+                           week_keys, cent_keys, cent_info):    
     
-    workbook = xlsxwriter.Workbook(str(fileName))
+    workbook = xlsxwriter.Workbook(str(st.result_folder_path + '/Calendario.xlsx'))
     
     cell_format = {'Normal': workbook.add_format(),
                    'Normal_Centered': workbook.add_format(),
