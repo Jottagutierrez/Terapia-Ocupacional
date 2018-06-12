@@ -81,7 +81,7 @@ class App(QWidget):
         fileName, _ = QFileDialog.getOpenFileName(self,"Seleccione Planilla de Datos", "","Hoja de Cálculo (*.xlsx)", options=options)
         if fileName:
             dbp.processing(fileName)
-            deltaOptions =[i/30 for i in range(3)]
+            deltaOptions =[i/100 for i in range(100)]
             DataFrame=mss.correr(deltaOptions)
             self.x=DataFrame[0]
             self.y=DataFrame[1]
@@ -124,7 +124,6 @@ class App(QWidget):
         y_value = this_point.get_ydata()'''
         self.ind = event.ind
         self.highlight.set_data(npy.take(self.x, self.ind),npy.take(self.y, self.ind))
-        self.deltaExport=self.ind
         self.canvas.draw_idle()
         
             
@@ -132,7 +131,7 @@ class App(QWidget):
         options = QFileDialog.Options()
         fileName, _ = QFileDialog.getSaveFileName(self,"Guardar Archivo","","Hoja de Cálculo (*.xlsx);;Text Files (*.txt)", options=options)
         if fileName:
-            DataFrame =mss.correr(self.deltaExport)
+            DataFrame =mss.correr(self.ind/100)
             G=DataFrame[3]
             Conj_B=DataFrame[4]#
             Conj_U=DataFrame[5]#
