@@ -15,6 +15,8 @@ from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as Navigatio
  
 class App(QWidget):
  
+
+    
     def __init__(self):
         super().__init__()
         self.title = 'Asignación Terapia Ocupacional Universidad de los Andes'
@@ -23,7 +25,8 @@ class App(QWidget):
         self.width = 1000 #cambia el ancho de la ventana
         self.height = 600 #cambia el alto de la ventana
         self.initUI()
- 
+        self.cant_puntos=20
+        
     def initUI(self):
         self.setWindowTitle(self.title) #setea el nombre de la ventana
         self.setGeometry(self.left, self.top, self.width, self.height) #setea el tamaño de la ventana y su posición inicial
@@ -81,7 +84,7 @@ class App(QWidget):
         fileName, _ = QFileDialog.getOpenFileName(self,"Seleccione Planilla de Datos", "","Hoja de Cálculo (*.xlsx)", options=options)
         if fileName:
             dbp.processing(fileName)
-            deltaOptions =[i/100 for i in range(100)]
+            deltaOptions =[i/self.cant_puntos for i in range(self.cant_puntos+1)]
             DataFrame=mss.correr(deltaOptions)
             self.x=DataFrame[0]
             self.y=DataFrame[1]
@@ -110,6 +113,7 @@ class App(QWidget):
         c1 = mplcursors.cursor(hover=False)
         @c1.connect("add")
         def _(sel):
+            #parametrizar 117 segun cantidad de puntos
             sel.annotation.set(position=(100-self.ind, self.ind/2))
             # Note: Needs to be set separately due to matplotlib/matplotlib#8956.
             sel.annotation.arrow_patch.set(arrowstyle="simple", fc="white", alpha=.5)
@@ -124,6 +128,7 @@ class App(QWidget):
         y_value = this_point.get_ydata()'''
         self.ind = event.ind
         self.highlight.set_data(npy.take(self.x, self.ind),npy.take(self.y, self.ind))
+        print(self.ind)
         self.canvas.draw_idle()
         
             
@@ -131,7 +136,7 @@ class App(QWidget):
         options = QFileDialog.Options()
         fileName, _ = QFileDialog.getSaveFileName(self,"Guardar Archivo","","Hoja de Cálculo (*.xlsx);;Text Files (*.txt)", options=options)
         if fileName:
-            DataFrame =mss.correr(self.ind/100)
+            DataFrame =mss.correr(self.ind/self.cant_puntos)
             G=DataFrame[3]
             Conj_B=DataFrame[4]#
             Conj_U=DataFrame[5]#
