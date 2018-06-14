@@ -31,11 +31,11 @@ def correr(deltaOptions):
     D = json.load(open(st.param_path_list['D']))
         #Disponibilidad del profesor 'p'... D = {profesor: disponibilidad}
         
-    C_b = json.load(open(st.param_path_list['C_b']))
+    #C_b = json.load(open(st.param_path_list['C_b']))
         #Costo base para cada actividad (aplica solo para profesores externos)...
         #C_b = {actividad: costo base}
         
-    C_t = json.load(open(st.param_path_list['C_t']))
+    #C_t = json.load(open(st.param_path_list['C_t']))
         #Costo de traslado para cada actividad (aplica solo para profesores externos)...
         #C_t = {actividad: costo traslado}
         
@@ -116,7 +116,7 @@ def correr(deltaOptions):
     #Variables de almacenamiento de resultados...
     list_sobrecarga = []
         #Lista con todos los totales de sobrecarga para los valores de delta propuestos...
-    list_costo = []
+    list_horasna = []
         #Lista con todos los totales de costo por externalizaciones para los valores de delta propuestos...
     ######################################################
     
@@ -128,7 +128,7 @@ def correr(deltaOptions):
         #Loop que itera el modelo para cada valor de delta...
         
         list_sobrecarga.append({})
-        list_costo.append({})
+        list_horasna.append({})
         #Para cada valor de delta, se crea un arreglo/diccionario dentro de las variables
         #de almacenamiento para guardar los resultados de cada iteración...
         
@@ -428,8 +428,8 @@ def correr(deltaOptions):
                                 except KeyError:
                                     pass
                     #m.addConstr(cond_4_1[j][pr], gp.GRB.LESS_EQUAL, 1, name='')
-                m.addConstr(cond_4_1_4to, gp.GRB.LESS_EQUAL, 2, name='')
-                m.addConstr(cond_4_1_5to, gp.GRB.LESS_EQUAL, 2, name='')
+                m.addConstr(cond_4_1_4to, gp.GRB.LESS_EQUAL, 1, name='')
+                m.addConstr(cond_4_1_5to, gp.GRB.LESS_EQUAL, 1, name='')
                     
                 cond_4_check['Corr'][j]['4to'] = cond_4_1_4to
                 cond_4_check['Corr'][j]['5to'] = cond_4_1_5to
@@ -762,22 +762,22 @@ def correr(deltaOptions):
             '''
             list_sobrecarga[i][deltaValue] = total_sobrecarga
             
-            list_costo[i][deltaValue] = Obj['Arg_1'].getValue()
+            list_horasna[i][deltaValue] = Obj['Arg_1'].getValue()/H
             
         ######################################
     
-    for i in range (0, len(list_costo)):
-        pl.plot(listifyDict(list_sobrecarga[i]), listifyDict(list_costo[i]), ROpt[i]['Plot'])
+    for i in range (0, len(list_horasna)):
+        pl.plot(listifyDict(list_sobrecarga[i]), listifyDict(list_horasna[i]), ROpt[i]['Plot'])
         pl.xlabel('Excedente profesores internos [hrs]')
-        pl.ylabel('Costo externalización [CLP]')
+        pl.ylabel('Horas a externalizar [hrs]')
         
     
     SobrecargaT = listifyDict(list_sobrecarga[i])
-    CostoT = listifyDict(list_costo[i])
+    HorasnaT = listifyDict(list_horasna[i])
     print(SobrecargaT)
-    print(CostoT)
+    print(HorasnaT)
     
-    return SobrecargaT, CostoT, deltaOptions, G, Conj_B, Conj_U, Conj_S, Conj_Lin, X, Y, W, week_keys, cent_keys, cent_info
+    return SobrecargaT, HorasnaT, deltaOptions, G, Conj_B, Conj_U, Conj_S, Conj_Lin, X, Y, W, week_keys, cent_keys, cent_info
     #SobrecargaT, CostoT, deltaOptions, Conj_B, Conj_U, Conj_S, X, Y, week_keys
     
     '''
