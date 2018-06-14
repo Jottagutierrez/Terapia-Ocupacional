@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QSizePolicy, QApplication, QWidget, QPushButton, QHBoxLayout, QGroupBox, QDialog, QVBoxLayout, QGridLayout, QMainWindow, QLabel, QDesktopWidget, QDoubleSpinBox, QFileDialog
+from PyQt5.QtWidgets import  QProgressBar, QApplication, QWidget, QPushButton, QHBoxLayout, QGroupBox, QDialog, QVBoxLayout, QGridLayout, QMainWindow, QLabel, QDesktopWidget, QDoubleSpinBox, QFileDialog
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot, QRect, Qt
 from PyQt5 import QtGui
@@ -15,18 +15,16 @@ from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as Navigatio
  
 class App(QWidget):
  
-
-    
     def __init__(self):
         super().__init__()
         self.title = 'Asignación Terapia Ocupacional Universidad de los Andes'
         self.left = 600 #cambia la posicion con respecto a la esquina superior izquierda
         self.top = 300  #cambia la posicion con respecto a la esquina superior izquierda
-        self.width = 1000 #cambia el ancho de la ventana
+        self.width = 1200 #cambia el ancho de la ventana
         self.height = 600 #cambia el alto de la ventana
         self.initUI()
         self.cant_puntos=20
-        
+ 
     def initUI(self):
         self.setWindowTitle(self.title) #setea el nombre de la ventana
         self.setGeometry(self.left, self.top, self.width, self.height) #setea el tamaño de la ventana y su posición inicial
@@ -64,6 +62,7 @@ class App(QWidget):
         layout.addWidget(btn2,2,2) 
         btn2.clicked.connect(self.export)
         
+       
         btn3 = QPushButton('Salir')
         btn3.setMinimumSize(0,40)
         btn3.resize(btn3.sizeHint())
@@ -79,12 +78,13 @@ class App(QWidget):
         #self.horizontalGroupBox.setLayout(layout)
         
     def upload(self):
+      
         options = QFileDialog.Options()
         #options |= QFileDialog.DontUseNativeDialog
         fileName, _ = QFileDialog.getOpenFileName(self,"Seleccione Planilla de Datos", "","Hoja de Cálculo (*.xlsx)", options=options)
         if fileName:
             dbp.processing(fileName)
-            deltaOptions =[i/self.cant_puntos for i in range(self.cant_puntos+1)]
+            deltaOptions =[i/self.cant_puntos for i in range(self.cant_puntos)]
             DataFrame=mss.correr(deltaOptions)
             self.x=DataFrame[0]
             self.y=DataFrame[1]
@@ -96,14 +96,15 @@ class App(QWidget):
         plt.cla()
         ax = self.figure.add_subplot(111)
         #self.x = [i for i in range(100)]
-        #self.y = [0.95**i for i in self.x]
+        #self.y = [0.95**i for i in self.x].
+        
         #ax.plot(self.x, self.y, '-', color='blue')
-        print('Y vale: '+ str(self.y))
+        print('Horas a externalizar: '+ str(self.y))
         #print('X vale: ' + str(self.x[0]))
         ax.scatter(self.x, self.y, color='blue', picker=1)
         
-        plt.xlabel('Costo')
-        plt.ylabel('Sobrecarga Total')
+        plt.xlabel('X:Excedente profesores internos [hrs]')
+        plt.ylabel('Y:Horas a externalizar [hrs]')
         plt.tight_layout(rect=[0, 0, 1, 0.985])
         ax.set_title('Curva Óptima')
         #mplcursors.cursor(hover=False)
@@ -113,7 +114,6 @@ class App(QWidget):
         c1 = mplcursors.cursor(hover=False)
         @c1.connect("add")
         def _(sel):
-            #parametrizar 117 segun cantidad de puntos
             sel.annotation.set(position=(100-self.ind, self.ind/2))
             # Note: Needs to be set separately due to matplotlib/matplotlib#8956.
             sel.annotation.arrow_patch.set(arrowstyle="simple", fc="white", alpha=.5)
@@ -126,9 +126,8 @@ class App(QWidget):
         '''this_point = event.artist
         x_value = this_point.get_xdata()
         y_value = this_point.get_ydata()'''
-        self.ind = event.ind
+        self.ind = event.ind      
         self.highlight.set_data(npy.take(self.x, self.ind),npy.take(self.y, self.ind))
-        print(self.ind)
         self.canvas.draw_idle()
         
             
